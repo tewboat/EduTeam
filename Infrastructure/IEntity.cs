@@ -2,7 +2,8 @@
 
 namespace Infrastructure
 {
-    public class Class1
+    public interface IEntity
     {
+        Guid Guid { get; }
     }
 }
