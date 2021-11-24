@@ -11,6 +11,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace User_Interface
 {
+    using Application;
+    using Microsoft.EntityFrameworkCore;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -23,6 +26,9 @@ namespace User_Interface
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationContext>(options => 
+                options.UseMySql( Configuration.GetConnectionString("Default"),
+                    new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddControllersWithViews();
         }
 
