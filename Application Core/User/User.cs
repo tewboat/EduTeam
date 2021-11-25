@@ -6,19 +6,15 @@ namespace ApplicationCore.User
 
     public class User : IUser
     {
-        public Guid Guid { get; }
-        public string Nickname { get; }
-        public List<IProject> Projects { get; }
+        public Guid Guid { get; set; }
+        public string Nickname { get; set; }
+        public List<UserProject> Projects { get; set; }
 
-        public User(Guid guid, string nickname, List<IProject> projects)
+        public User(string nickname)
         {
-            Guid = guid;
+            Guid = Guid.NewGuid();
             Nickname = nickname;
-            Projects = projects;
-        }
-
-        public User(string nickname) : this(Guid.NewGuid(), nickname, new List<IProject>())
-        {
+            Projects = new List<UserProject>();
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
 
 namespace User_Interface.Controllers
 {
+    using Application;
+    using ApplicationCore.User;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private ApplicationContextFactory contextFactory = new ();
 
         public HomeController(ILogger<HomeController> logger)
         {
