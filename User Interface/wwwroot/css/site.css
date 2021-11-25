@@ -86,3 +86,39 @@ body {
     margin: 0 10% 0 10%;
     float: right;
 }
+
+
+.page-layout-content {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 100px;
+}
+
+.info-block1 {
+    width: 50%;
+}
+
+.hi {
+    font-size: 46px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.main-text {
+    font-size: 28px
+}
+
+.main-img1 {
+    margin-left: auto;
+    margin-top: 100px
+}
+
+.main-img2 {
+    margin-right: auto;
+    margin-top: 100px
+}
+
+.main-btn {
+    margin: 50px 0 0 0;
+    size: 36px;
+}
