@@ -1,14 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using User_Interface.Controllers
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - User_Interface</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
-<body>
-<header>
+
+<body class="">
+<header class="">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand eduteam-logo" asp-area="" asp-controller="Home" asp-action="Index">EduTeam</a>
@@ -16,28 +18,48 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            @if (false) // TODO: Сделать проверку на то, вошёл пользователь или нет. Через cookies скорее всего.
+            {
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between navbar-">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item eduteam-nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Проекты</a>
-                    </li>
-                    <li class="nav-item eduteam-nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Люди</a>
-                    </li>
-                    <li class="nav-item dropdown profile">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Профиль
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Личный кабинет</a>
-                            <a class="dropdown-item" href="#">Мои команды</a>
-                            <a class="dropdown-item" href="#">Сообщения</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Выйти</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item eduteam-nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Проекты</a>
+                </li>
+                <li class="nav-item eduteam-nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Люди</a>
+                </li>
+                <li class="nav-item dropdown right-navbar-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Профиль
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Личный кабинет</a>
+                        <a class="dropdown-item" href="#">Мои команды</a>
+                        <a class="dropdown-item" href="#">Сообщения</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Выйти</a>
+                    </div>
+                </li>
+            </ul></div>
+            }
+            else 
+            {
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between navbar-">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item eduteam-nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Проекты</a>
+                </li>
+                <li class="nav-item eduteam-nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Люди</a>
+                </li>
+                <li class="right-navbar-item">
+                    <div>
+                        <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Login">Войти</a>
+                        <a class="btn btn-primary reg-btn" asp-area="" asp-controller="Home" asp-action="Registration">Зарегистрироваться</a>
+                    </div>
+                </li>
+            </ul></div>
+            }
         </div>
     </nav>
 </header>

@@ -73,7 +73,7 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.profile {
+.right-navbar-item {
     position: absolute;
     right: 10%;
 }
@@ -120,5 +120,21 @@ body {
 
 .main-btn {
     margin: 50px 0 0 0;
-    size: 36px;
 }
+
+.page {
+    display: grid;
+    justify-content: center;
+    max-width: 1200px;
+}
+
+.reg-btn {
+    background-color: #FE8100;
+    border-color: #FE8100;    
+}
+
+.reg-btn:hover {
+    background-color: #ff8a16;
+    border-color: #ff8a16;
+}
+
