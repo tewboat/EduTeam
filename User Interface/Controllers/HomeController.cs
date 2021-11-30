@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
+using User_Interface.Views.Home;
 
 namespace User_Interface.Controllers
 {
@@ -34,14 +35,47 @@ namespace User_Interface.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
+        [HttpGet]
         public IActionResult Registration()
         {
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Registration(Registration registration)
+        {
+            if ( true /*ModelState.IsValid*/) {
+                //TODO: add the user to the database
+                return View("Profile");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(Login login)
+        {
+            if (ModelState.IsValid) {
+                //TODO: verify the password is correct
+                return View("Profile");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }
