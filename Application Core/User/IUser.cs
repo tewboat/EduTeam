@@ -7,6 +7,6 @@ namespace ApplicationCore.User
     public interface IUser : IEntity
     {
         string Nickname { get; }
-        List<UserProject> Projects { get; }
+        List<MemberProject> Projects { get; }
     }
 }

@@ -10,8 +10,23 @@ namespace ApplicationCore.Project
         public Guid Guid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<UserProject> Members { get; set; }
-        public List<UserProject> Invitations { get; set; }
-        public List<UserProject> Requests { get; set; }
+        public List<MemberProject> Members { get; set; }
+        public List<InvitationProject> Invitations { get; set; }
+        public List<RequestProject> Requests { get; set; }
+
+        public Project()
+        {
+        }
+
+        public Project(string name, string description)
+        {
+            Guid = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            Members = new List<MemberProject>();
+            Invitations = new List<InvitationProject>();
+            Requests = new List<RequestProject>();
+        }
     }
+    
 }

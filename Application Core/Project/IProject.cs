@@ -9,8 +9,8 @@ namespace ApplicationCore.Project
     {
         string Name { get; }
         string Description { get; }
-        List<UserProject> Members { get; }
-        List<UserProject> Invitations { get; }
-        List<UserProject> Requests { get; }
+        List<MemberProject> Members { get; }
+        List<InvitationProject> Invitations { get; }
+        List<RequestProject> Requests { get; }
     }
 }
