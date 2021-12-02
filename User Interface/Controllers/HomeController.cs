@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Linq;
+using ApplicationCore;
+using ApplicationCore.Project;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
 using User_Interface.Views.Home;
@@ -12,13 +16,14 @@ namespace User_Interface.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContextFactory contextFactory = new ();
+        private ApplicationContext _applicationContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
+            _applicationContext = applicationContext;
         }
-        
+
         public IActionResult Index()
         {
             return View();
@@ -44,7 +49,8 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult Registration(Registration registration)
         {
-            if ( true /*ModelState.IsValid*/) {
+            if (true /*ModelState.IsValid*/)
+            {
                 //TODO: add the user to the database
                 return View("Profile");
             }
@@ -68,7 +74,8 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 //TODO: verify the password is correct
                 return View("Profile");
             }

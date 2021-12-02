@@ -8,13 +8,21 @@ namespace ApplicationCore.User
     {
         public Guid Guid { get; set; }
         public string Nickname { get; set; }
-        public List<UserProject> Projects { get; set; }
+        public List<MemberProject> Projects { get; set; }
+        public List<InvitationProject> Invitations { get; set; }
+        public List<RequestProject> Requests { get; set; }
 
         public User(string nickname)
         {
             Guid = Guid.NewGuid();
             Nickname = nickname;
-            Projects = new List<UserProject>();
+            Projects = new List<MemberProject>();
+            Invitations = new List<InvitationProject>();
+            Requests = new List<RequestProject>();
+        }
+
+        public User()
+        {
         }
     }
 }
