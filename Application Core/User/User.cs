@@ -16,12 +16,14 @@ namespace ApplicationCore.User
         public List<InvitationProject> Invitations { get; set; }
         public List<RequestProject> Requests { get; set; }
 
-        public User(string firstName, string secondName, string nickname)
+        public User(string firstName, string secondName, string nickname, string email, string password)
         {
             Guid = Guid.NewGuid();
             FirstName = firstName;
             SecondName = secondName;
             Nickname = nickname;
+            Email = email;
+            Password = password;
             Projects = new List<MemberProject>();
             Invitations = new List<InvitationProject>();
             Requests = new List<RequestProject>();
