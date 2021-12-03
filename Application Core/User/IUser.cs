@@ -6,7 +6,12 @@ namespace ApplicationCore.User
 
     public interface IUser : IEntity
     {
-        string Nickname { get; }
-        List<MemberProject> Projects { get; }
+        string FirstName { get; set; }
+        string SecondName { get; set; }
+        string Password { get; set; }
+        string Nickname { get; set; }
+        List<MemberProject> Projects { get; set; }
+        List<InvitationProject> Invitations { get; set; }
+        List<RequestProject> Requests { get; set; }
     }
 }
