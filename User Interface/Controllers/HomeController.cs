@@ -16,12 +16,12 @@ namespace User_Interface.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext _applicationContext;
+        private ApplicationContext context;
 
         public HomeController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            _applicationContext = applicationContext;
+            context = applicationContext;
         }
 
         public IActionResult Index()
@@ -47,17 +47,22 @@ namespace User_Interface.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(Registration registration)
+        public IActionResult Registration(RegistrationModel registration)
         {
-            if (true /*ModelState.IsValid*/)
+            if ( /*ModelState.IsValid*/ context.Users.All(u => u.Email != registration.Email))
             {
-                //TODO: add the user to the database
+                context.Users.Add(new User(
+                    registration.FirstName,
+                    registration.SecondName,
+                    registration.Nickname,
+                    registration.Email,
+                    registration.Password
+                ));
+                context.SaveChanges();
                 return View("Profile");
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
         }
 
         public IActionResult Profile()
