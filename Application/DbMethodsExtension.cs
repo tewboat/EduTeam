@@ -11,6 +11,5 @@ namespace Application
     {
         public static T GetEntityByGuid<T>(this IQueryable<T> enumerable, Guid guid) where T: IEntity=> 
             enumerable.FirstOrDefault(entity => entity.Guid == guid);
-        
     }
 }

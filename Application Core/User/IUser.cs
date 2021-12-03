@@ -8,6 +8,7 @@ namespace ApplicationCore.User
     {
         string FirstName { get; set; }
         string SecondName { get; set; }
+        string Email { get; set; }
         string Password { get; set; }
         string Nickname { get; set; }
         List<MemberProject> Projects { get; set; }
