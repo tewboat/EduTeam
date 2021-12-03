@@ -7,10 +7,10 @@ namespace ApplicationCore.Project
 
     public interface IProject : IEntity
     {
-        string Name { get; }
-        string Description { get; }
-        List<MemberProject> Members { get; }
-        List<InvitationProject> Invitations { get; }
-        List<RequestProject> Requests { get; }
+        string Name { get; set; }
+        string Description { get; set; }
+        List<MemberProject> Members { get; set; }
+        List<InvitationProject> Invitations { get; set; }
+        List<RequestProject> Requests { get; set; }
     }
 }
