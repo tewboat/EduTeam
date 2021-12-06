@@ -9,10 +9,5 @@ namespace User_Interface.Views.Home
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
-        public void OnGet()
-        {
-            
-        }
     }
 }
