@@ -1,3 +1,4 @@
+using System;
 using Infrastructure;
 
 namespace ApplicationCore.Project
@@ -12,5 +13,9 @@ namespace ApplicationCore.Project
         List<MemberProject> Members { get; set; }
         List<InvitationProject> Invitations { get; set; }
         List<RequestProject> Requests { get; set; }
+        bool IsScrumUsed { get; set; }
+        Language Language { get; set; }
+        bool IsPersonalMeetingsPreferred { get; set; }
+        DateOnly DateCreation { get; set; }
     }
 }
