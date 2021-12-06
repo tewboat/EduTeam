@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ApplicationCore;
 using ApplicationCore.Project;
@@ -37,7 +38,7 @@ namespace User_Interface.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpGet]
@@ -88,6 +89,11 @@ namespace User_Interface.Controllers
             {
                 return View();
             }
+        }
+
+        public ViewResult Projects(List<ViewProject> projects)
+        {
+            return View(projects);
         }
     }
 }
