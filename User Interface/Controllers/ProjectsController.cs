@@ -32,7 +32,6 @@ namespace User_Interface.Controllers
             filter ??= _ => true;
             order ??= project => project.DateCreation;
             return View(
-                "~/Views/Home/Projects.cshtml",
                 context.Projects
                     .Where(filter)
                     .OrderByDescending(order)
