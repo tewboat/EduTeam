@@ -17,12 +17,13 @@ namespace ApplicationCore.Project
         public Language Language { get; set; }
         public bool IsPersonalMeetingsPreferred { get; set; }
         public DateOnly DateCreation { get; set; }
+        public List<TeamRole> RequiredTeamRoles { get; set; }
 
         public Project()
         {
         }
 
-        public Project(string name, string description, bool language, 
+        public Project(string name, string description, Language language, 
             bool isScrumUsed = false, bool isPersonalMeetingsPreferred = false)
         {
             Guid = Guid.NewGuid();
@@ -34,6 +35,7 @@ namespace ApplicationCore.Project
             Members = new List<MemberProject>();
             Invitations = new List<InvitationProject>();
             Requests = new List<RequestProject>();
+            RequiredTeamRoles = new List<TeamRole>();
         }
     }
     
