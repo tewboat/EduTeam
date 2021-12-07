@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Application.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20211207065214_Name")]
-    partial class Name
+    [Migration("20211207155609_Update")]
+    partial class Update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,7 +79,12 @@ namespace Application.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("TempId3")
+                        .HasColumnType("int");
+
                     b.HasKey("Guid");
+
+                    b.HasAlternateKey("TempId3");
 
                     b.ToTable("Projects");
                 });

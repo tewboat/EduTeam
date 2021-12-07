@@ -59,13 +59,30 @@ namespace Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateOnly>("DateCreation")
+                        .HasColumnType("date");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPersonalMeetingsPreferred")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsScrumUsed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("TempId3")
+                        .HasColumnType("int");
+
                     b.HasKey("Guid");
+
+                    b.HasAlternateKey("TempId3");
 
                     b.ToTable("Projects");
                 });
@@ -92,6 +109,9 @@ namespace Application.Migrations
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
