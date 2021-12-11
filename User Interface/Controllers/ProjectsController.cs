@@ -124,8 +124,8 @@ namespace User_Interface.Controllers
                             RequiredTeamRoles = project.RequiredTeamRoles
                                 .Select(role => new ViewTeamRole()
                                 {
-                                    Name = role.Name,
-                                    Description = role.Description
+                                    Name = role.TeamRole.Name,
+                                    Description = role.TeamRole.Description
                                 })
                                 .ToList(),
                             IsPersonalMeetingsPreferred = project.IsPersonalMeetingsPreferred,

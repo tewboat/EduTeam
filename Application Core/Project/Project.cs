@@ -17,7 +17,7 @@ namespace ApplicationCore.Project
         public Language Language { get; set; }
         public bool IsPersonalMeetingsPreferred { get; set; }
         public DateOnly DateCreation { get; set; }
-        public List<TeamRole> RequiredTeamRoles { get; set; }
+        public List<RoleProject> RequiredTeamRoles { get; set; }
 
         public Project()
         {
@@ -35,7 +35,7 @@ namespace ApplicationCore.Project
             Members = new List<MemberProject>();
             Invitations = new List<InvitationProject>();
             Requests = new List<RequestProject>();
-            RequiredTeamRoles = new List<TeamRole>();
+            RequiredTeamRoles = new List<RoleProject>();
         }
     }
     

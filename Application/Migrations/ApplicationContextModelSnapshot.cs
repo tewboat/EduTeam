@@ -77,14 +77,26 @@ namespace Application.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("TempId3")
-                        .HasColumnType("int");
+                    b.HasKey("Guid");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Project.TeamRole", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Guid");
 
-                    b.HasAlternateKey("TempId3");
-
-                    b.ToTable("Projects");
+                    b.ToTable("TeamRole");
                 });
 
             modelBuilder.Entity("ApplicationCore.RequestProject", b =>
@@ -102,6 +114,21 @@ namespace Application.Migrations
                     b.HasIndex("ProjectGuid");
 
                     b.ToTable("RequestProject");
+                });
+
+            modelBuilder.Entity("ApplicationCore.RoleProject", b =>
+                {
+                    b.Property<Guid>("ProjectGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("TeamRoleGuid")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("ProjectGuid");
+
+                    b.HasIndex("TeamRoleGuid");
+
+                    b.ToTable("RoleProject");
                 });
 
             modelBuilder.Entity("ApplicationCore.User.User", b =>
@@ -190,6 +217,23 @@ namespace Application.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ApplicationCore.RoleProject", b =>
+                {
+                    b.HasOne("ApplicationCore.Project.Project", "Project")
+                        .WithMany("RequiredTeamRoles")
+                        .HasForeignKey("ProjectGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApplicationCore.Project.TeamRole", "TeamRole")
+                        .WithMany()
+                        .HasForeignKey("TeamRoleGuid");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("TeamRole");
+                });
+
             modelBuilder.Entity("ApplicationCore.Project.Project", b =>
                 {
                     b.Navigation("Invitations");
@@ -197,6 +241,8 @@ namespace Application.Migrations
                     b.Navigation("Members");
 
                     b.Navigation("Requests");
+
+                    b.Navigation("RequiredTeamRoles");
                 });
 
             modelBuilder.Entity("ApplicationCore.User.User", b =>

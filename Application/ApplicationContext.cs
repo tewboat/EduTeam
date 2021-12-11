@@ -21,13 +21,17 @@ namespace Application
                 .HasKey(user => user.Guid);
             modelBuilder.Entity<Project>()
                 .HasKey(project => project.Guid);
+            modelBuilder.Entity<TeamRole>()
+                .HasKey(tr => tr.Guid);
             modelBuilder.Entity<MemberProject>()
                 .HasKey(up => new { up.UserGuid, up.ProjectGuid });
             modelBuilder.Entity<InvitationProject>()
                 .HasKey(up => new { up.UserGuid, up.ProjectGuid });
             modelBuilder.Entity<RequestProject>()
                 .HasKey(up => new { up.UserGuid, up.ProjectGuid });
-            
+            modelBuilder.Entity<RoleProject>()
+                .HasKey(rp => rp.ProjectGuid);
+
             modelBuilder.Entity<MemberProject>()
                 .HasOne(up => up.User)
                 .WithMany(u => u.Projects)
@@ -52,6 +56,10 @@ namespace Application
                 .HasOne(up => up.Project)
                 .WithMany(u => u.Requests)
                 .HasForeignKey(up => up.ProjectGuid);
+            modelBuilder.Entity<RoleProject>()
+                .HasOne(rp => rp.Project)
+                .WithMany(p => p.RequiredTeamRoles)
+                .HasForeignKey(rp => rp.ProjectGuid);
         }
     }
 }
