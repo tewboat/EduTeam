@@ -16,16 +16,7 @@ namespace User_Interface.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
-        private List<Project> _projects;
-        private int productPage;
-        private Func<Project, bool> filter;
-        private Func<Project, object> order;
-
-        public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
-        {
-            _logger = logger;
-            context = applicationContext;
-            _projects = new List<Project>() 
+        private static List<Project> _projects = new List<Project>() 
                 { new Project(
                     "EduTeam1", 
                     "Сервис для поиска команды для учебных проектов", 
@@ -99,6 +90,14 @@ namespace User_Interface.Controllers
                         new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
                     }}
                 };
+        private int productPage;
+        private Func<Project, bool> filter;
+        private Func<Project, object> order;
+
+        public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
+        {
+            _logger = logger;
+            context = applicationContext;
             productPage = 1;
             filter = project => true;
             order = project => project.DateCreation;
@@ -110,12 +109,12 @@ namespace User_Interface.Controllers
             int productPage = 1)
         {
             return View(
-                _projects
-                    .Where(filter)
-                    .OrderByDescending(order)
-                    .Skip((productPage - 1) * PageSize)
-                    .Select(ConvertToView)
-                    .ToList()
+                    _projects
+                        .Where(filter)
+                        .OrderByDescending(order)
+                        .Skip((productPage - 1) * PageSize)
+                        .Select(ConvertToView)
+                        .ToList()
                 );
         }
 

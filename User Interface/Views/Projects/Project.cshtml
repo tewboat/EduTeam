@@ -5,4 +5,20 @@
     //Layout = "_Layout";
 }
 
+<head>
+    
+</head>
+<body>
 <h2>@Model.Name</h2>
+<hr/>
+
+<h5>Описание: </h5>
+<p>@Model.Description</p>
+
+<h5>Участники: </h5>
+@foreach (var member in Model.Members)
+{
+    @Html.Partial("~/Views/Users/UserSummary.cshtml")
+}
+
+</body>
