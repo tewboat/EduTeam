@@ -10,11 +10,12 @@ namespace User_Interface.Models
 {
     public class ViewUser
     {
+        public Guid Guid { get; set; }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string Nickname { get; set; }
         public string Email { get; set; }
-        public string Discription { get; set; }
-        public List<ViewProject> Projects { get; set; }
+        public string Description { get; set; }
+        //public List<ViewProject> Projects { get; set; }
     }
 }

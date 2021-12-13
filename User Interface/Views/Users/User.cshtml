@@ -1,8 +1,17 @@
 @model ViewUser
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = Model.Nickname + " — Проект — EduTeam";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<head>
+    
+</head>
+    <body>
+    <h2>@Model.FirstName @Model.SecondName</h2>
+    <hr/>
+
+    <h5>Описание: </h5>
+    <p>@Model.Description</p>
+</body>

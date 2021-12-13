@@ -93,6 +93,7 @@ namespace User_Interface.Controllers
         private int productPage;
         private Func<Project, bool> filter;
         private Func<Project, object> order;
+        public int PageSize = 4;
 
         public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
@@ -102,23 +103,22 @@ namespace User_Interface.Controllers
             filter = project => true;
             order = project => project.DateCreation;
         }
-        public int PageSize = 4;
         
         
-        public ViewResult Projects(
-            int productPage = 1)
+        public ViewResult Projects(int productPage = 1)
         {
             return View(
                     _projects
                         .Where(filter)
                         .OrderByDescending(order)
                         .Skip((productPage - 1) * PageSize)
+                        .Take(PageSize)
                         .Select(ConvertToView)
                         .ToList()
                 );
         }
 
-        public ViewResult Project(string name, Guid guid)
+        public ViewResult Project(Guid guid)
         {
             foreach (var proj in _projects)
             {
@@ -153,7 +153,7 @@ namespace User_Interface.Controllers
                         SecondName = member.User.SecondName,
                         Nickname = member.User.Nickname,
                         Email = member.User.Email,
-                        Discription = member.User.Description
+                        Description = member.User.Description
                     }).ToList()
             };
         }
