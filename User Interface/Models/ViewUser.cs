@@ -16,14 +16,5 @@ namespace User_Interface.Models
         public string Email { get; set; }
         public string Discription { get; set; }
         public List<ViewProject> Projects { get; set; }
-
-        public ViewUser(User user)
-        {
-            FirstName = user.FirstName;
-            SecondName = user.SecondName;
-            Nickname = user.Nickname;
-            Email = user.Email;
-            Discription = user.Description;
-        }
     }
 }

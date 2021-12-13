@@ -1,0 +1,19 @@
+@model ViewProject
+
+<div class="card" style="width: 100%; display: inline-block; margin: 20px">
+     <div class="card-body" style="display: inline-block; width: 25%; vertical-align: top">
+         <h6 class="card-title">Требуемые роли:</h6>
+         <ul class="card-text">
+             @foreach (var role in Model.RequiredTeamRoles)
+             {
+                 <li>@role.Name</li>
+             }
+         </ul>
+     </div>
+    <div class="card-body" style="display: inline-block; width: 65%">
+        <h5 class="card-title">@Model.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.Description</h6>
+        <a class="btn btn-outline-primary btn-sm" style="horiz-align: right; vertical-align: bottom" href="@Url.Action("Project", "Projects", new {name = Model.Name, guid = Model.Guid})">Перейти к проекту</a>
+    </div>
+
+</div>

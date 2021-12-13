@@ -1,3 +1,4 @@
+@using ApplicationCore.Project
 @model List<User_Interface.Models.ViewProject>
 
 @{
@@ -8,9 +9,81 @@
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/proj_peop.css"/>
+    <script src="js/projects.js"></script>
 </head>
 <body>
 <div>
-    
+    <div style="display: inline-block; width: 20%; vertical-align: top; margin-top: 100px">
+        <div class="card">
+            <div>
+                <div class="card-body">
+                    <h6 class="card-title">Сортировать по:</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                             дате создания
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            релевантности
+                        </label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h6 class="card-title">Фильтр</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Команда использует Scrum
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Команда предпочитает личные встречи
+                            </label>
+                        </div>
+                        <div class="form-check check-box">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Русскоязычная команда
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: inline-block; width: 70%">
+        <div class="container">
+            <br/>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <form class="card card-sm">
+                        <div class=" row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <i class="fas fa-search h4 text-body"></i>
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm form-control-borderless" type="search" placeholder="Найти интересующую роль в проекте...">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-success" type="submit">Найти</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div style="margin: 20px">
+            @foreach (var project in Model)
+            {
+                @Html.Partial("ProjectSummary", project)
+            }
+        </div>
+    </div>
 </div>
 </body>
