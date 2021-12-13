@@ -7,6 +7,7 @@ namespace User_Interface.Models
 {
     public class ViewProject
     {
+        public Guid Guid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateCreation { get; set; }
