@@ -56,8 +56,9 @@ namespace User_Interface.Controllers
                 );
         }
 
-        public ViewResult User(Guid guid)
+        public ViewResult UserProfile(Guid guid)
         {
+            //var user = context.Users.GetEntityByGuid(guid);
             foreach (var user in _users)
             {
                 if (guid == user.Guid)
@@ -66,7 +67,18 @@ namespace User_Interface.Controllers
             throw new ArgumentException("No project with this Guid");
         }
 
-        private ViewUser ConvertToView(User user)
+        public ViewResult EditUserProfile(Guid guid)
+        {
+            //var user = context.Users.GetEntityByGuid(guid);
+            foreach (var user in _users)
+            {
+                if (guid == user.Guid)
+                    return View(ConvertToView(user));
+            }
+            throw new ArgumentException("No project with this Guid");
+        }
+
+        public static ViewUser ConvertToView(User user)
         {
             return new ViewUser()
             {
