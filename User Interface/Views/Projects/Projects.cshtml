@@ -1,4 +1,4 @@
-@model List<User_Interface.Models.ViewProject>
+@model User_Interface.Models.PageProjectListView
 
 @{
     //Layout = null;
@@ -77,11 +77,14 @@
                 </div>
             </div>
         </div>
-        <div style="margin: 20px; margin-bottom: 100px">
-            @foreach (var project in Model)
+        <div style="margin: 20px;">
+            @foreach (var project in Model.Projects)
             {
-                @Html.Partial("ProjectSummary", project)
+                @await Html.PartialAsync("ProjectSummary", project, new ViewDataDictionary(ViewData) {{"controller", "Projects"}, {"method", "Projects"}})
             }
+        </div>
+        <div style="margin-bottom: 100px;">
+            @await Html.PartialAsync("~/Views/ListPage/PageNumbering.cshtml", Model.PagingInfo)
         </div>
     </div>
 </div>

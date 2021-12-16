@@ -33,7 +33,7 @@
                         Профиль
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Мой профиль</a>
+                        <a class="dropdown-item" href="@Url.Action("UserProfile", "Users", new {guid = UsersController._users[0].Guid})">Мой профиль</a>
                         <a class="dropdown-item" href="#">Мои команды</a>
                         <a class="dropdown-item" href="#">Настройки</a>
                         <div class="dropdown-divider"></div>

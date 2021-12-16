@@ -1,4 +1,4 @@
-@model List<User_Interface.Models.ViewUser>
+@model User_Interface.Models.PageUserListView
 
 @{
     ViewData["Title"] = "Люди — EduTeam";
@@ -77,18 +77,25 @@
                 </div>
             </div>
         </div>
-        <div style="margin: 20px; margin-bottom: 100px">
-            @for (int i = 0; i < Model.Count; i += 2)
+        <div style="margin: 20px;">
+            @for (int i = 0; i < Model.Users.Count; i += 2)
             {
                 <div class="row" style="margin-top: 20px">
                     <div class="col-xl-6 col-lg-7 col-md-12">
-                        @Html.Partial("UserSummary", Model[i])
+                        @await Html.PartialAsync("UserSummary", Model.Users[i])
                     </div>
-                    <div class="col-xl-6 col-lg-7 col-md-12">
-                        @Html.Partial("UserSummary", Model[i + 1])
-                    </div>
+                    @if (i + 1 != Model.Users.Count)
+                    {
+                        <div class="col-xl-6 col-lg-7 col-md-12">
+                            @await Html.PartialAsync("UserSummary", Model.Users[i + 1])
+                        </div>
+                    }
                 </div>
             }
+        </div>
+        
+        <div style="margin-bottom: 100px;">
+            @await Html.PartialAsync("~/Views/ListPage/PageNumbering.cshtml", Model.PagingInfo, new ViewDataDictionary(ViewData) {{"controller", "Users"}, {"method", "Users"}})
         </div>
     </div>
 </div>
