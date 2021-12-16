@@ -88,12 +88,85 @@ namespace User_Interface.Controllers
                         new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
                         new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
                         new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                    "EduTeam1", 
+                    "Сервис для поиска команды для учебных проектов", 
+                    Language.Rus, 
+                    true, 
+                    true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                            new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                        "EduTeam2", 
+                        "Сервис для поиска команды для учебных проектов", 
+                        Language.Rus, 
+                        true, 
+                        true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                        "EduTeam3", 
+                        "Сервис для поиска команды для учебных проектов", 
+                        Language.Rus, 
+                        true, 
+                        true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                        "EduTeam4", 
+                        "Сервис для поиска команды для учебных проектов", 
+                        Language.Rus, 
+                        true, 
+                        true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                        "EduTeam5", 
+                        "Сервис для поиска команды для учебных проектов", 
+                        Language.Rus, 
+                        true, 
+                        true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
+                    }},
+                    new Project(
+                        "EduTeam6", 
+                        "Сервис для поиска команды для учебных проектов", 
+                        Language.Rus, 
+                        true, 
+                        true)
+                    { RequiredTeamRoles = new List<RoleProject>()
+                    {
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
+                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
                     }}
                 };
         private int productPage;
         private Func<Project, bool> filter;
         private Func<Project, object> order;
-        public int PageSize = 4;
+        public int PageSize = 2;
+        public int PageCount => context.Projects.Count() / PageSize + context.Projects.Count() % PageSize == 0 ? 0 : 1;
 
         public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
@@ -107,15 +180,23 @@ namespace User_Interface.Controllers
         
         public ViewResult Projects(int productPage = 1)
         {
-            return View(
-                    _projects
-                        .Where(filter)
-                        .OrderByDescending(order)
-                        .Skip((productPage - 1) * PageSize)
-                        .Take(PageSize)
-                        .Select(ConvertToView)
-                        .ToList()
-                );
+            return View(new PageProjectListView()
+            {
+                Projects = _projects
+                    .Where(filter)
+                    .OrderByDescending(order)
+                    .Skip((productPage - 1) * PageSize)
+                    .Take(PageSize)
+                    .Select(ConvertToView)
+                    .ToList(),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = productPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _projects.Count
+                },
+                ProjectsFilter = new ProjectsFilter(){ }
+            });
         }
 
         public ViewResult Project(Guid guid)
@@ -156,6 +237,12 @@ namespace User_Interface.Controllers
                         Description = member.User.Description
                     }).ToList()
             };
+        }
+
+        private bool IsProjectMatchesFilter(Project project, ProjectsFilter filter)
+        {
+            // TODO : Реализовать фильтрацию проектов
+            return true;
         }
     }
 }

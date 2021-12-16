@@ -15,7 +15,7 @@ namespace User_Interface.Controllers
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
 
-        private static List<User> _users = new List<User>(){
+        public static List<User> _users = new List<User>(){
             new User("Илья1", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья2", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья3", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
@@ -28,6 +28,7 @@ namespace User_Interface.Controllers
             new User("Илья10", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья11", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья12", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
+            new User("Илья13", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             };
         private int productPage;
         private Func<User, bool> filter;
@@ -45,14 +46,24 @@ namespace User_Interface.Controllers
 
         public ViewResult Users(int productPage = 1)
         {
-            return View(
-                _users
-                    .Where(filter)
-                    .OrderByDescending(order)
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize)
-                    .Select(ConvertToView)
-                    .ToList()
+            return View( new PageUserListView()
+                {
+                    Users = _users
+                        .Where(filter)
+                        .OrderByDescending(order)
+                        .Skip((productPage - 1) * PageSize)
+                        .Take(PageSize)
+                        .Select(ConvertToView)
+                        .ToList(),
+                    PagingInfo = new PagingInfo()
+                    {
+                        CurrentPage = productPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _users.Count
+                    },
+                    UsersFilter = new UsersFilter(){ }
+                
+                }
                 );
         }
 
