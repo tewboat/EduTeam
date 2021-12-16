@@ -29,15 +29,16 @@ namespace User_Interface.Controllers
         {
             if ( /*ModelState.IsValid*/ context.Users.All(u => u.Email != registration.Email))
             {
-                context.Users.Add(new User(
+                var newUser = new User(
                     registration.FirstName,
                     registration.SecondName,
                     registration.Nickname,
                     registration.Email,
                     registration.Password
-                ));
+                );
+                context.Users.Add(newUser);
                 context.SaveChanges();
-                return RedirectToAction("Profile", "Profile");
+                return RedirectToAction("", "Users", newUser);
             }
 
             return View();
@@ -55,7 +56,7 @@ namespace User_Interface.Controllers
             if (ModelState.IsValid)
             {
                 //TODO: verify the password is correct
-                return RedirectToAction("Profile", "Profile");
+                return RedirectToAction("UserProfile", "Users");
             }
             else
             {

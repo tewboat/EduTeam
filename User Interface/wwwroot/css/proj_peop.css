@@ -11,3 +11,13 @@
 .check-box {
     size: 16px;
 }
+
+.profile-head {
+    transform: translateY(5rem)
+}
+
+.cover {
+    background-color: #183C9F;
+    background-size: cover;
+    background-repeat: no-repeat
+}

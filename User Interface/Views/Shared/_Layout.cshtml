@@ -18,7 +18,7 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            @if (false) // TODO: Сделать проверку на то, вошёл пользователь или нет. Через cookies скорее всего.
+            @if (true) // TODO: Сделать проверку на то, вошёл пользователь или нет. Через cookies скорее всего.
             {
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between navbar-">
             <ul class="navbar-nav flex-grow-1">
@@ -33,11 +33,11 @@
                         Профиль
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Личный кабинет</a>
+                        <a class="dropdown-item" href="#">Мой профиль</a>
                         <a class="dropdown-item" href="#">Мои команды</a>
-                        <a class="dropdown-item" href="#">Сообщения</a>
+                        <a class="dropdown-item" href="#">Настройки</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Выйти</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="LogOut">Выйти</a>
                     </div>
                 </li>
             </ul></div>

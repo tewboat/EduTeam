@@ -40,5 +40,12 @@ namespace User_Interface.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult LogOut()
+        {
+            // # TODO: Реализовать выход из аккаунта
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
