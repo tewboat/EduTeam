@@ -74,17 +74,6 @@ namespace User_Interface.Controllers
             throw new NullReferenceException();
         }
 
-        public ViewResult EditUserProfile(Guid guid)
-        {
-            //var user = context.Users.GetEntityByGuid(guid);
-            foreach (var user in _users)
-            {
-                if (guid == user.Guid)
-                    return View(ConvertToView(user));
-            }
-            throw new ArgumentException("No project with this Guid");
-        }
-
         public static ViewUser ConvertToView(User user)
         {
             return new ViewUser()

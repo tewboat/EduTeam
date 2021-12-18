@@ -1,0 +1,34 @@
+@model ViewTeamRole
+
+@{
+    Layout = "_Layout";
+}
+
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/log_reg.css"/>
+</head>
+<body>
+<div class="" style="margin-top: 100px">
+    <div class="card" style="width: 20rem; margin: auto">
+        <div class=" text-center card-header" style=""><h4>Добавить роль</h4></div>
+        <form class="p-a-l card-body" asp-action="AddTeamRole" method="post">
+            <div asp-validation-summary="All"></div>
+            <div class="form-group input-pole">
+                <label asp-for="Name">Роль</label>
+                <input class="form-control" asp-for="Name"/>
+            </div>
+            <div class="form-group input-pole">
+                <label asp-for="Description">Описание</label>
+                <input class="form-control" asp-for="Description"/>
+            </div>
+            <div class="text-center" style="margin-top: 20px">
+                <button class="btn btn-primary" type="submit">
+                    Добавить
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
