@@ -57,6 +57,7 @@ namespace User_Interface.Controllers
                 .FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
             if (user == null)
                 return View();
+            Response.Cookies.Append("UserGuid", user.Guid.ToString());
             return RedirectToAction("UserProfile", "Users", user.Guid);
         }
     }
