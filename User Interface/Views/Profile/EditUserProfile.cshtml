@@ -1,6 +1,7 @@
 @model ViewUser
 
 @{
+    ViewBag.Title = Model.Nickname + " — Изменение профиля — EduTeam";
     Layout = "_Layout";
 }
 
@@ -52,7 +53,10 @@
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center experience">
                     <span>Роли в команде, в которых хочу быть</span>
-                </div><br></div>
+                </div>
+                <br>
+                <a class="btn btn-outline-primary btn-sm" style="horiz-align: right; vertical-align: bottom" href="@Url.Action("AddTeamRole", "Profile", new {guid = Model.Guid})">Добавить</a>
+                </div>
         </div>
     </div>
 </div>
