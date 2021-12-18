@@ -7,6 +7,8 @@ using User_Interface.Views.Home;
 
 namespace User_Interface.Controllers
 {
+    using System;
+
     public class RegLogController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,21 +29,18 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult Registration(RegistrationModel registration)
         {
-            if ( /*ModelState.IsValid*/ context.Users.All(u => u.Email != registration.Email))
-            {
-                var newUser = new User(
-                    registration.FirstName,
-                    registration.SecondName,
-                    registration.Nickname,
-                    registration.Email,
-                    registration.Password
-                );
-                context.Users.Add(newUser);
-                context.SaveChanges();
-                return RedirectToAction("", "Users", newUser);
-            }
+            if (!context.Users.All(u => u.Email != registration.Email)) return View();
+            var newUser = new User(
+                registration.FirstName,
+                registration.SecondName,
+                registration.Nickname,
+                registration.Email,
+                registration.Password
+            );
+            context.Users.Add(newUser);
+            context.SaveChanges();
+            return RedirectToAction("", "Users", newUser);
 
-            return View();
         }
         
         [HttpGet]
@@ -53,15 +52,12 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            if (ModelState.IsValid)
-            {
-                //TODO: verify the password is correct
-                return RedirectToAction("UserProfile", "Users");
-            }
-            else
-            {
+            if (!ModelState.IsValid) return View();
+            var user = context.Users
+                .FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            if (user == null)
                 return View();
-            }
+            return RedirectToAction("UserProfile", "Users", user.Guid);
         }
     }
 }

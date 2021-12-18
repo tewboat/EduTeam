@@ -32,7 +32,7 @@ namespace ApplicationCore.User
         }
 
         public User()
-        {
-        }
-    }
+             {
+             }
+         }
 }
