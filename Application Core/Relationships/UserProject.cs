@@ -6,9 +6,11 @@ namespace ApplicationCore
 
     public class UserProject
     {
-        [Column("UserGuid")] public Guid UserGuid { get; set; }
+        [Column("UserGuid")] 
+        public Guid UserGuid { get; set; }
         public User.User User { get; set; }
-        [Column("ProjectGuid")] public Guid ProjectGuid { get; set; }
+        [Column("ProjectGuid")] 
+        public Guid ProjectGuid { get; set; }
         public Project.Project Project { get; set; }
 
         public UserProject(User.User user, Project.Project project)

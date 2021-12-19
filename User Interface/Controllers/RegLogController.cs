@@ -19,7 +19,7 @@ namespace User_Interface.Controllers
             _logger = logger;
             context = applicationContext;
         }
-        
+
         [HttpGet]
         public IActionResult Registration()
         {
@@ -40,9 +40,8 @@ namespace User_Interface.Controllers
             context.Users.Add(newUser);
             context.SaveChanges();
             return RedirectToAction("", "Users", newUser);
-
         }
-        
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -58,7 +57,7 @@ namespace User_Interface.Controllers
             if (user == null)
                 return View();
             Response.Cookies.Append("UserGuid", user.Guid.ToString());
-            return RedirectToAction("UserProfile", "Users", user.Guid);
+            return RedirectToAction("UserProfile", "Users", new {guid = user.Guid});
         }
     }
 }

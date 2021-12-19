@@ -160,6 +160,24 @@ namespace Application.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ApplicationCore.UserRole", b =>
+                {
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("RoleGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("TeamRoleGuid")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("UserGuid", "RoleGuid");
+
+                    b.HasIndex("TeamRoleGuid");
+
+                    b.ToTable("UserRole");
+                });
+
             modelBuilder.Entity("ApplicationCore.InvitationProject", b =>
                 {
                     b.HasOne("ApplicationCore.Project.Project", "Project")
@@ -234,6 +252,23 @@ namespace Application.Migrations
                     b.Navigation("TeamRole");
                 });
 
+            modelBuilder.Entity("ApplicationCore.UserRole", b =>
+                {
+                    b.HasOne("ApplicationCore.Project.TeamRole", "TeamRole")
+                        .WithMany()
+                        .HasForeignKey("TeamRoleGuid");
+
+                    b.HasOne("ApplicationCore.User.User", "User")
+                        .WithMany("PreferredRoles")
+                        .HasForeignKey("UserGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TeamRole");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ApplicationCore.Project.Project", b =>
                 {
                     b.Navigation("Invitations");
@@ -248,6 +283,8 @@ namespace Application.Migrations
             modelBuilder.Entity("ApplicationCore.User.User", b =>
                 {
                     b.Navigation("Invitations");
+
+                    b.Navigation("PreferredRoles");
 
                     b.Navigation("Projects");
 
