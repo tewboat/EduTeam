@@ -15,7 +15,8 @@ namespace User_Interface.Controllers
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
 
-        public static List<User> _users = new List<User>(){
+        public static List<User> _users = new List<User>()
+        {
             new User("Илья1", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья2", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья3", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
@@ -29,7 +30,8 @@ namespace User_Interface.Controllers
             new User("Илья11", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья12", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
             new User("Илья13", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            };
+        };
+
         private int productPage;
         private Func<User, bool> filter;
         private Func<User, object> order;
@@ -46,7 +48,7 @@ namespace User_Interface.Controllers
 
         public ViewResult Users(int productPage = 1)
         {
-            return View( new PageUserListView()
+            return View(new PageUserListView()
                 {
                     Users = _users
                         .Where(filter)
@@ -61,17 +63,17 @@ namespace User_Interface.Controllers
                         ItemsPerPage = PageSize,
                         TotalItems = _users.Count
                     },
-                    UsersFilter = new UsersFilter(){ }
-                
+                    UsersFilter = new UsersFilter() { }
                 }
-                );
+            );
         }
 
-        public ViewResult UserProfile(User user)
+        public ViewResult UserProfile(Guid guid)
         {
-            if (user != null)
-                return View(ConvertToView(user));
-            throw new NullReferenceException();
+            var user = context.Users.GetEntityByGuid(guid);
+            if (user == null)
+                throw new NullReferenceException();
+            return View(ConvertToView(user));
         }
 
         public static ViewUser ConvertToView(User user)
