@@ -67,11 +67,16 @@ namespace User_Interface.Controllers
                 );
         }
 
-        public ViewResult UserProfile(User user)
+        public ViewResult UserProfile(Guid guid)
         {
-            if (user != null)
-                return View(ConvertToView(user));
-            throw new NullReferenceException();
+            //var user = context.Users.GetEntityByGuid(guid);
+            foreach (var user in _users)
+            {
+                if (guid == user.Guid)
+                    return View(ConvertToView(user));
+            }
+
+            throw new ArgumentException("No project with this Guid");
         }
 
         public static ViewUser ConvertToView(User user)

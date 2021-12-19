@@ -29,6 +29,11 @@ namespace User_Interface.Controllers
             throw new ArgumentException("No project with this Guid");
         }
 
+        public ActionResult UserProjects()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult AddTeamRole()
         {
