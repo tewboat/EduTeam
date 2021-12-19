@@ -1,4 +1,4 @@
-@model ViewUser
+@model List<ViewProject>
 
 @{
     ViewBag.Title = "Мои проекты" + " — EduTeam";
@@ -17,7 +17,14 @@
     </div>
     <div>
         <h2>Мои проекты</h2><hr/>
-        
+
+        @if (Model != null)
+        {
+            foreach (var project in Model)
+                await Html.PartialAsync("~/Views/Projects/ProjectSummary.cshtml", project);
+        }
+        <a class="btn btn-outline-primary btn-sm" href="@Url.Action("CreateProject", "Projects")">Добавить</a>
+                        
         
     </div>
 </div>

@@ -81,11 +81,11 @@
         <div style="margin: 20px;">
             @foreach (var project in Model.Projects)
             {
-                @await Html.PartialAsync("ProjectSummary", project, new ViewDataDictionary(ViewData) {{"controller", "Projects"}, {"method", "Projects"}})
+                @await Html.PartialAsync("ProjectSummary", project)
             }
         </div>
         <div style="margin-bottom: 100px;">
-            @await Html.PartialAsync("~/Views/ListPage/PageNumbering.cshtml", Model.PagingInfo)
+            @await Html.PartialAsync("~/Views/ListPage/PageNumbering.cshtml", Model.PagingInfo,  new ViewDataDictionary(ViewData) {{"controller", "Projects"}, {"method", "Projects"}})
         </div>
     </div>
 </div>

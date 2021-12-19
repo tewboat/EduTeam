@@ -209,6 +209,18 @@ namespace User_Interface.Controllers
             throw new ArgumentException("No project with this Guid");
         }
 
+        [HttpGet]
+        public ActionResult CreateProject()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateProject(ViewProject project)
+        {
+            throw new NotImplementedException();
+        }
+
         private ViewProject ConvertToView(Project project)
         {
             return new ViewProject()
