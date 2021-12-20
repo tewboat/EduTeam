@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ApplicationCore;
 using ApplicationCore.Project;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -43,8 +46,7 @@ namespace User_Interface.Controllers
 
         public IActionResult LogOut()
         {
-            // # TODO: Реализовать выход из аккаунта
-
+            Response.Cookies.Delete("UserGuid" ?? throw new InvalidOperationException());
             return RedirectToAction("Index", "Home");
         }
     }

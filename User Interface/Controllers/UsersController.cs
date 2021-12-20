@@ -15,23 +15,6 @@ namespace User_Interface.Controllers
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
 
-        public static List<User> _users = new List<User>()
-        {
-            new User("Илья1", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья2", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья3", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья4", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья5", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья6", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья7", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья8", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья9", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья10", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья11", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья12", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-            new User("Илья13", "Жданов", "zdravulin", "zdavulin@mail.ru", "qwerty", "Junior C# Developer в UDV"),
-        };
-
         private int productPage;
         private Func<User, bool> filter;
         private Func<User, object> order;
@@ -50,7 +33,7 @@ namespace User_Interface.Controllers
         {
             return View(new PageUserListView()
                 {
-                    Users = _users
+                    Users = context.Users
                         .Where(filter)
                         .OrderByDescending(order)
                         .Skip((productPage - 1) * PageSize)
@@ -61,7 +44,7 @@ namespace User_Interface.Controllers
                     {
                         CurrentPage = productPage,
                         ItemsPerPage = PageSize,
-                        TotalItems = _users.Count
+                        TotalItems = context.Users.Count()
                     },
                     UsersFilter = new UsersFilter() { }
                 }

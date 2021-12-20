@@ -1,7 +1,7 @@
 @model ViewProject
 
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 
 <!DOCTYPE html>
@@ -9,10 +9,35 @@
 <html>
 <head>
     <title>title</title>
+    <link rel="stylesheet" href="~/css/proj_peop.css"/>
 </head>
 <body>
 <div>
-      
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="col-md-5" style="margin: auto">
+            <div class="card p-3 py-5">
+                <div class="d-flex  align-items-center mb-2">
+                  <h4 class="">Создать проект</h4>
+                </div><hr/>
+                <form class="p-a-l" asp-action="CreateProject" asp-controller="Projects" method="post">
+                    <div class="form-group input-pole">
+                        <label asp-for="Name">Имя проекта</label>
+                        <input class="form-control" asp-for="Name"/>
+                    </div>
+                    <div class="form-group input-pole">
+                        <label asp-for="Description">Описание</label>
+                        <input class="form-control" asp-for="Description"/>
+                    </div>
+
+                    <div class="text-center" style="margin-top: 20px">
+                        <button class="btn btn-primary" type="submit">
+                            Создать проект
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

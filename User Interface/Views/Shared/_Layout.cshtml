@@ -1,4 +1,12 @@
 ﻿@using User_Interface.Controllers
+@using Microsoft.AspNetCore.Http.Features
+@using System.Net.Http
+
+@{
+    
+    var isUserLogIn = Context.Request.Cookies.ContainsKey("UserGuid");
+}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -18,7 +26,7 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            @if (true) // TODO: Сделать проверку на то, вошёл пользователь или нет. Через cookies скорее всего.
+            @if (isUserLogIn)
             {
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between navbar-">
             <ul class="navbar-nav flex-grow-1">
@@ -34,10 +42,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item"
-                           href="@Url.Action("UserProfile", "Users", new {guid = UsersController._users[0].Guid})"
+                           href="@Url.Action("UserProfile", "Users", new {guid = Context.Request.Cookies["UserGuid"]})"
                            >Мой профиль</a>
                         <a class="dropdown-item" 
-                           href="@Url.Action("UserProjects", "Profile", new {guid = UsersController._users[0].Guid})"
+                           href="@Url.Action("UserProjects", "Profile", new {guid = Context.Request.Cookies["UserGuid"]})"
                            >Мои проекты</a>
                         <a class="dropdown-item" href="#">Настройки</a>
                         <div class="dropdown-divider"></div>

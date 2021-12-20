@@ -37,6 +37,7 @@ namespace User_Interface.Controllers
                 registration.Email,
                 registration.Password
             );
+            Response.Cookies.Append("UserGuid", newUser.Guid.ToString());
             context.Users.Add(newUser);
             context.SaveChanges();
             return RedirectToAction("", "Users", newUser);

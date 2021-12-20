@@ -1,23 +1,29 @@
-namespace ApplicationCore;
+using ApplicationCore.Project;
+using ApplicationCore.User;
 
-using System;
-using Project;
-
-public class UserRole
+namespace ApplicationCore
 {
-    public User.User User { get; set; }
-    public TeamRole TeamRole { get; set; }
-    public Guid UserGuid { get; set; }
-    public Guid RoleGuid { get; set; }
 
-    public UserRole(User.User user, TeamRole role)
+    using System;
+    using Project;
+
+    public class UserRole
     {
-        User = user;
-        TeamRole = role;
-        UserGuid = user.Guid;
-        RoleGuid = role.Guid;
+        public User.User User { get; set; }
+        public TeamRole TeamRole { get; set; }
+        public Guid UserGuid { get; set; }
+        public Guid RoleGuid { get; set; }
+
+        public UserRole(User.User user, TeamRole role)
+        {
+            User = user;
+            TeamRole = role;
+            UserGuid = user.Guid;
+            RoleGuid = role.Guid;
+        }
+
+        public UserRole()
+        {
+        }
     }
-    
-    public UserRole(){}
 }
-    
