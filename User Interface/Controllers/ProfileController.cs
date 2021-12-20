@@ -18,12 +18,27 @@ namespace User_Interface.Controllers
             context = applicationContext;
         }
         
+        [HttpGet]
         public ViewResult EditUserProfile(Guid guid)
         {
             var user = context.Users.GetEntityByGuid(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(UsersController.ConvertToView(user));
+        }
+
+        [HttpPost]
+        public IActionResult EditUserProfile(ViewUser editUser)
+        {
+            var guid = new Guid(Request.Cookies["UserGuid"]);
+            var user = context.Users.GetEntityByGuid(guid);
+            user.FirstName = editUser.FirstName;
+            user.SecondName = editUser.SecondName;
+            user.Nickname = editUser.Nickname;
+            user.Description = editUser.Description;
+            context.SaveChanges();
+            editUser = UsersController.ConvertToView(context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])));
+            return RedirectToAction("UserProfile", "Users", editUser);
         }
 
         public ActionResult UserProjects()

@@ -51,7 +51,7 @@ namespace User_Interface.Controllers
             );
         }
 
-        public ViewResult UserProfile(Guid guid)
+        public IActionResult UserProfile(Guid guid)
         {
             var user = context.Users.GetEntityByGuid(guid);
             if (user == null)

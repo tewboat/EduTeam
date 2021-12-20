@@ -148,8 +148,15 @@ namespace User_Interface.Controllers
         {
             var project = new Project(p.Name, p.Description, Language.Rus);
             ProjectsController._projects.Add(project);
+            
+            
+            context.Projects.Add(project);
+            project.Members.Add(
+                new MemberProject(
+                    context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])), 
+                    project));
+            context.SaveChanges();
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
-            //throw new NotImplementedException();
         }
 
         private ViewProject ConvertToView(Project project)
