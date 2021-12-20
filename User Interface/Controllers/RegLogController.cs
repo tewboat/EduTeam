@@ -40,7 +40,7 @@ namespace User_Interface.Controllers
             Response.Cookies.Append("UserGuid", newUser.Guid.ToString());
             context.Users.Add(newUser);
             context.SaveChanges();
-            return RedirectToAction("", "Users", newUser);
+            return RedirectToAction("UserProfile", "Users", new {guid = newUser.Guid});
         }
 
         [HttpGet]
