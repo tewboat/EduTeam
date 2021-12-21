@@ -40,7 +40,7 @@ namespace User_Interface.Controllers
             user.Nickname = editUser.Nickname;
             user.Description = editUser.Description;
             context.SaveChanges();
-            return RedirectToAction("UserProfile", "Users", guid);
+            return RedirectToAction("UserProfile", "Users", new {guid});
         }
 
         public ActionResult UserProjects()

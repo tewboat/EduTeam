@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Project;
@@ -40,7 +41,7 @@ public class TeamRoleController : Controller
                 throw new NullReferenceException();
             user.PreferredRoles.Add(new UserRole(user, newTeamRole));
             context.SaveChanges();
-            return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
+            return RedirectToAction("EditUserProfile", "Profile", new {guid});
         }
 
         public static ViewTeamRole ConvertToView(TeamRole teamRole)

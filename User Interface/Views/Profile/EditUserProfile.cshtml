@@ -66,7 +66,7 @@
                 @if (Model.TeamRoles != null)
                 {
                     foreach (var teamRole in Model.TeamRoles)
-                        await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole);
+                        @(await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole))
                 }
                 <br>
                 <a class="btn btn-outline-primary btn-sm" 

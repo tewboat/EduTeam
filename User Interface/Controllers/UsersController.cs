@@ -35,6 +35,7 @@ namespace User_Interface.Controllers
             return View(new PageUserListView()
                 {
                     Users = context.Users
+                        .Include(u => u.PreferredRoles)
                         .Where(filter)
                         .OrderByDescending(order)
                         .Skip((productPage - 1) * PageSize)
@@ -64,20 +65,19 @@ namespace User_Interface.Controllers
 
         public static ViewUser ConvertToView(User user)
         {
-            var a =  new ViewUser()
+            return new ViewUser()
             {
                 Guid = user.Guid,
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
                 Nickname = user.Nickname,
                 Description = user.Description,
-                Email = user.Email
+                Email = user.Email,
+                TeamRoles = new List<ViewTeamRole>(
+                    user.PreferredRoles
+                        .Select(userRole => userRole.TeamRole)
+                        .Select(TeamRoleController.ConvertToView))
             };
-            a.TeamRoles = new List<ViewTeamRole>(
-                user.PreferredRoles
-                    .Select(userRole => userRole.TeamRole)
-                    .Select(TeamRoleController.ConvertToView));
-            return a;
         }
     }
 }
