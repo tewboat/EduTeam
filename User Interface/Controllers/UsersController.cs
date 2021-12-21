@@ -5,6 +5,7 @@ using Application;
 using ApplicationCore.Project;
 using ApplicationCore.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
 
@@ -53,7 +54,9 @@ namespace User_Interface.Controllers
 
         public IActionResult UserProfile(Guid guid)
         {
-            var user = context.Users.GetEntityByGuid(guid);
+            var user = context.Users
+                .Include(u => u.PreferredRoles)
+                .GetEntityByGuid(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(ConvertToView(user));
@@ -61,7 +64,7 @@ namespace User_Interface.Controllers
 
         public static ViewUser ConvertToView(User user)
         {
-            return new ViewUser()
+            var a =  new ViewUser()
             {
                 Guid = user.Guid,
                 FirstName = user.FirstName,
@@ -70,6 +73,11 @@ namespace User_Interface.Controllers
                 Description = user.Description,
                 Email = user.Email
             };
+            a.TeamRoles = new List<ViewTeamRole>(
+                user.PreferredRoles
+                    .Select(userRole => userRole.TeamRole)
+                    .Select(TeamRoleController.ConvertToView));
+            return a;
         }
     }
 }

@@ -1,7 +1,10 @@
 using System;
 using Application;
+using ApplicationCore;
+using ApplicationCore.Project;
 using ApplicationCore.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
 
@@ -21,7 +24,7 @@ namespace User_Interface.Controllers
         [HttpGet]
         public ViewResult EditUserProfile(Guid guid)
         {
-            var user = context.Users.GetEntityByGuid(guid);
+            var user = context.Users.Include(u => u.PreferredRoles).GetEntityByGuid(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(UsersController.ConvertToView(user));
@@ -37,27 +40,12 @@ namespace User_Interface.Controllers
             user.Nickname = editUser.Nickname;
             user.Description = editUser.Description;
             context.SaveChanges();
-            editUser = UsersController.ConvertToView(context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])));
-            return RedirectToAction("UserProfile", "Users", editUser);
+            return RedirectToAction("UserProfile", "Users", guid);
         }
 
         public ActionResult UserProjects()
         {
             return View();
-        }
-
-        [HttpGet]
-        public ActionResult AddTeamRole()
-        {
-            return PartialView();
-        }
-
-        [HttpPost]
-        public ActionResult AddTeamRole(ViewTeamRole teamRole)
-        {
-            // TODO: Добавить роль пользователя
-            
-            return RedirectToAction("EditUserProfile");
         }
     }
 }
