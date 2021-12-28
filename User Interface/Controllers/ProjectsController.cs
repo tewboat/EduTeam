@@ -17,55 +17,15 @@ namespace User_Interface.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
-        private static List<Project> _projects = new List<Project>() 
-                { new Project(
-                    "EduTeam1", 
-                    "Сервис для поиска команды для учебных проектов", 
-                    Language.Rus, 
-                    true, 
-                    true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                            new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }},
-                    new Project(
-                        "EduTeam2", 
-                        "Сервис для поиска команды для учебных проектов", 
-                        Language.Rus, 
-                        true, 
-                        true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }},
-                    new Project(
-                        "EduTeam3", 
-                        "Сервис для поиска команды для учебных проектов", 
-                        Language.Rus, 
-                        true, 
-                        true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }}
-                };
-        private int productPage;
         private Func<Project, bool> filter;
         private Func<Project, object> order;
-        public int PageSize = 2;
+        public int PageSize = 6;
         public int PageCount => context.Projects.Count() / PageSize + context.Projects.Count() % PageSize == 0 ? 0 : 1;
 
         public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
             context = applicationContext;
-            productPage = 1;
             filter = project => true;
             order = project => project.DateCreation;
         }
@@ -75,7 +35,8 @@ namespace User_Interface.Controllers
         {
             return View(new PageProjectListView()
             {
-                Projects = _projects
+                Projects = context.Projects
+                    .Include(p => p.RequiredTeamRoles)
                     .Where(filter)
                     .OrderByDescending(order)
                     .Skip((productPage - 1) * PageSize)
@@ -86,7 +47,7 @@ namespace User_Interface.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = _projects.Count
+                    TotalItems = context.Projects.Count()
                 },
                 ProjectsFilter = new ProjectsFilter(){ }
             });
@@ -94,12 +55,16 @@ namespace User_Interface.Controllers
 
         public ViewResult Project(Guid guid)
         {
-            foreach (var proj in _projects.Where(proj => guid == proj.Guid))
-            {
-                return View(ConvertToView(proj));
-            }
-
-            throw new ArgumentException("No project with this Guid");
+            var project = context.Projects
+                .Include(p => p.Members)
+                .Include(p => p.RequiredTeamRoles)
+                .GetEntityByGuid(guid);
+            for (int i = 0; i < project.Members.Count; i++)
+                project.Members[i].User = context.Users
+                    .GetEntityByGuid(project.Members[i].UserGuid);
+            if (project == null)
+                throw new NullReferenceException("No project with this Guid");
+            return View(ConvertToView(project));
         }
 
         [HttpGet]
@@ -112,19 +77,16 @@ namespace User_Interface.Controllers
         public ActionResult CreateProject(ViewProject p)
         {
             var project = new Project(p.Name, p.Description, Language.Rus);
-            ProjectsController._projects.Add(project);
-            
-            
-            context.Projects.Add(project);
             project.Members.Add(
                 new MemberProject(
                     context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])), 
                     project));
+            context.Projects.Add(project);
             context.SaveChanges();
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
         }
 
-        private ViewProject ConvertToView(Project project)
+        public static ViewProject ConvertToView(Project project)
         {
             return new ViewProject()
             {
@@ -134,23 +96,12 @@ namespace User_Interface.Controllers
                 DateCreation = project.DateCreation.ToString(),
                 IsScrumUsed = project.IsScrumUsed,
                 Language = project.Language.ToString(),
-                RequiredTeamRoles = project.RequiredTeamRoles
-                    .Select(role => new ViewTeamRole()
-                    {
-                        Name = role.TeamRole.Name,
-                        Description = role.TeamRole.Description
-                    })
+                RequiredTeamRoles = project.RequiredTeamRoles?
+                    .Select(role => TeamRoleController.ConvertToView(role.TeamRole))
                     .ToList(),
                 IsPersonalMeetingsPreferred = project.IsPersonalMeetingsPreferred,
-                Members = project.Members.Select(member =>
-                    new ViewUser()
-                    {
-                        FirstName = member.User.FirstName,
-                        SecondName = member.User.SecondName,
-                        Nickname = member.User.Nickname,
-                        Email = member.User.Email,
-                        Description = member.User.Description
-                    }).ToList()
+                Members = project.Members?.Select(member => UsersController.ConvertToView(member.User))
+                    .ToList()
             };
         }
 
