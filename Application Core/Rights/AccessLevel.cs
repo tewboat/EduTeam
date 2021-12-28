@@ -2,9 +2,9 @@ namespace ApplicationCore.Rights
 {
     public enum AccessLevel
     {
-        Member = 0,
-        Moderator = 1,
-        Admin = 2,
+        Visitor = 0,
+        Member = 1,
+        Moderator = 2,
         Owner = 3
     }
 }

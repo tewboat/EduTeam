@@ -14,10 +14,10 @@ namespace Application
         public static T GetEntityByGuid<T>(this IQueryable<T> enumerable, Guid guid) where T: IEntity=> 
             enumerable.FirstOrDefault(entity => entity.Guid == guid);
 
-        public static AccessLevel? GetMemberAccessLevel(this IQueryable<MemberProject> queryable, Guid projectGuid,
-            Guid userGuid) =>
+        public static AccessLevel? GetMemberAccessLevel(this IQueryable<MemberProject> queryable, Project project,
+            User user) =>
             queryable.FirstOrDefault(entity
-                    => entity.ProjectGuid == projectGuid && entity.UserGuid == userGuid)
+                    => entity.ProjectGuid == project.Guid && entity.UserGuid == user.Guid)
                 ?.UserAccessLevel;
 
     }
