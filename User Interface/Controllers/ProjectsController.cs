@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Common;
@@ -44,42 +45,6 @@ namespace User_Interface.Controllers
                     }},
                     new Project(
                         "EduTeam3", 
-                        "Сервис для поиска команды для учебных проектов", 
-                        Language.Rus, 
-                        true, 
-                        true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }},
-                    new Project(
-                        "EduTeam4", 
-                        "Сервис для поиска команды для учебных проектов", 
-                        Language.Rus, 
-                        true, 
-                        true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }},
-                    new Project(
-                        "EduTeam5", 
-                        "Сервис для поиска команды для учебных проектов", 
-                        Language.Rus, 
-                        true, 
-                        true)
-                    { RequiredTeamRoles = new List<RoleProject>()
-                    {
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Дизайнер", Description = "Дизайн веб-сервиса, макет в фигме"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Верстальщик сайта", Description = "Вёрстка сайта в соответствии с макетом"}},
-                        new RoleProject(){TeamRole = new TeamRole(){Name = "Бэкендер C#", Description = "Работа с базами данных"}}
-                    }},
-                    new Project(
-                        "EduTeam6", 
                         "Сервис для поиска команды для учебных проектов", 
                         Language.Rus, 
                         true, 
@@ -145,10 +110,18 @@ namespace User_Interface.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(ViewProject p)
+        public async Task<ActionResult> CreateProject(ViewProject p)
         {
             var project = new Project(p.Name, p.Description, Language.Rus);
             _projects.Add(project);
+            
+            
+            context.Projects.Add(project);
+            project.Members.Add(
+                new MemberProject(
+                    context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])), 
+                    project));
+            await context.SaveChangesAsync();
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
         }
 

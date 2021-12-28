@@ -28,25 +28,34 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Изменение профиля</h4>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">Имя</label><input type="text" class="form-control" placeholder="first name" value="@Model.FirstName"></div>
-                    <div class="col-md-6"><label class="labels">Фамилия</label><input type="text" class="form-control" value="@Model.SecondName" placeholder="surname"></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="labels">Никнейм</label>
-                        <div class="input-group-prepend">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">&#64;</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="enter address line 1" value="@Model.Nickname"  aria-describedby="basic-addon1">
+                 <form class="" asp-action="EditUserProfile" asp-controller="Profile" method="post">
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels" asp-for="FirstName">Имя</label>
+                            <input type="text" class="form-control" asp-for="FirstName" placeholder="first name" value="@Model.FirstName">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels" asp-for="SecondName">Фамилия</label>
+                            <input type="text" class="form-control" asp-for="SecondName" value="@Model.SecondName" placeholder="surname">
                         </div>
                     </div>
-                    <div class="col-md-12"><label class="labels">Описание</label>
-                        <textarea type="text" class="form-control" placeholder="Описание">@Model.Description </textarea>
-                    </div>
-                </div>
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Сохранить изменения</button></div>
+                     <div class="row mt-3">
+                         <div class="col-md-12">
+                             <label class="labels" asp-for="Nickname">Никнейм</label>
+                             <div class="input-group-prepend">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="basic-addon1">&#64;</span>
+                                 </div>
+                                 <input type="text" class="form-control" asp-for="Nickname" placeholder="enter address line 1" value="@Model.Nickname"  aria-describedby="basic-addon1">
+                             </div>
+                         </div>
+                         <div class="col-md-12">
+                             <label class="labels" asp-for="Description">Описание</label>
+                             <textarea type="text" class="form-control" asp-for="Description" placeholder="Описание">@Model.Description </textarea>
+                         </div>
+                     </div>
+                     <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Сохранить изменения</button></div>
+                 </form>
             </div>
         </div>
         <div class="col-md-4">
@@ -54,8 +63,16 @@
                 <div class="d-flex justify-content-between align-items-center experience">
                     <span>Роли в команде, в которых хочу быть</span>
                 </div>
+                @if (Model.TeamRoles != null)
+                {
+                    foreach (var teamRole in Model.TeamRoles)
+                        @(await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole))
+                }
                 <br>
-                <a class="btn btn-outline-primary btn-sm" style="horiz-align: right; vertical-align: bottom" href="@Url.Action("AddTeamRole", "Profile", new {guid = Model.Guid})">Добавить</a>
+                <a class="btn btn-outline-primary btn-sm" 
+                   style="horiz-align: right; vertical-align: bottom"
+                   href="@Url.Action("AddTeamRole", "TeamRole", new {guid = Model.Guid})"
+                   >Добавить роль</a>
             </div>
         </div>
     </div>

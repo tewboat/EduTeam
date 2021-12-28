@@ -5,6 +5,7 @@ using Application;
 using ApplicationCore.Project;
 using ApplicationCore.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using User_Interface.Models;
 
@@ -34,6 +35,7 @@ namespace User_Interface.Controllers
             return View(new PageUserListView()
                 {
                     Users = context.Users
+                        .Include(u => u.PreferredRoles)
                         .Where(filter)
                         .OrderByDescending(order)
                         .Skip((productPage - 1) * PageSize)
@@ -51,9 +53,11 @@ namespace User_Interface.Controllers
             );
         }
 
-        public ViewResult UserProfile(Guid guid)
+        public IActionResult UserProfile(Guid guid)
         {
-            var user = context.Users.GetEntityByGuid(guid);
+            var user = context.Users
+                .Include(u => u.PreferredRoles)
+                .GetEntityByGuid(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(ConvertToView(user));
@@ -68,7 +72,10 @@ namespace User_Interface.Controllers
                 SecondName = user.SecondName,
                 Nickname = user.Nickname,
                 Description = user.Description,
-                Email = user.Email
+                Email = user.Email,
+                TeamRoles = new List<ViewTeamRole>(
+                    user.PreferredRoles
+                        .Select(TeamRoleController.ConvertToView))
             };
         }
     }
