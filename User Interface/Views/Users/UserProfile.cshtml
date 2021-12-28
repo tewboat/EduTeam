@@ -1,3 +1,4 @@
+@using ApplicationCore.Project
 @model ViewUser
 
 @{
@@ -50,9 +51,11 @@
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Роли, в которых хочу побыть в команде</h5>@*<a href="#" class="btn btn-link text-muted">Show all</a>*@
                     </div>
-                    <div class="p-4  shadow-sm bg-light">
-                        <p class="font-italic mb-0">Роль уан</p>
-                    </div>
+                    @if (Model.TeamRoles != null)
+                    {
+                        foreach (var teamRole in Model.TeamRoles)
+                            await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole);
+                    }
                 </div>
             </div>
         </div>

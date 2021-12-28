@@ -22,6 +22,7 @@ namespace User_Interface.Controllers
             context = applicationContext;
         }
         
+        [HttpGet]
         public ViewResult EditUserProfile(Guid guid)
         {
             var user = context.Users.Include(u => u.PreferredRoles).GetEntityByGuid(guid);
@@ -30,17 +31,24 @@ namespace User_Interface.Controllers
             return View(UsersController.ConvertToView(user));
         }
 
+        [HttpPost]
+        public IActionResult EditUserProfile(ViewUser editUser)
+        {
+            var guid = new Guid(Request.Cookies["UserGuid"]);
+            var user = context.Users.GetEntityByGuid(guid);
+            user.FirstName = editUser.FirstName;
+            user.SecondName = editUser.SecondName;
+            user.Nickname = editUser.Nickname;
+            user.Description = editUser.Description;
+            context.SaveChanges();
+            return RedirectToAction("UserProfile", "Users", new {guid});
+        }
+
         public ActionResult UserProjects()
         {
             return View();
         }
-
-        [HttpGet]
-        public ActionResult AddTeamRole()
-        {
-            return PartialView();
-        }
-
+        
         [HttpPost]
         public ActionResult AddTeamRole(ViewTeamRole viewTeamRole)
         {
