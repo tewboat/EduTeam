@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Common;
@@ -31,7 +32,7 @@ namespace User_Interface.Controllers
         }
         
         
-        public ViewResult Projects(int productPage = 1)
+        public ViewResult Projects(int itemsPerPage = 1)
         {
             return View(new PageProjectListView()
             {
@@ -39,8 +40,8 @@ namespace User_Interface.Controllers
                     .Include(p => p.RequiredTeamRoles)
                     .Where(filter)
                     .OrderByDescending(order)
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize)
+                    .Skip((productPage - 1) * pageSize)
+                    .Take(pageSize)
                     .Select(ConvertToView)
                     .ToList(),
                 PagingInfo = new PagingInfo()
@@ -52,7 +53,7 @@ namespace User_Interface.Controllers
                 ProjectsFilter = new ProjectsFilter(){ }
             });
         }
-
+        
         public ViewResult Project(Guid guid)
         {
             var project = context.Projects
@@ -74,15 +75,20 @@ namespace User_Interface.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(ViewProject p)
+        public async Task<ActionResult> CreateProject(ViewProject p)
         {
+            if (!Request.Cookies.ContainsKey("UserGuid"))
+                return View();
+            var user = context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
+            if (user == null)
+                return View();
             var project = new Project(p.Name, p.Description, Language.Rus);
+            context.Projects.Add(project);
             project.Members.Add(
                 new MemberProject(
-                    context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])), 
+                    user, 
                     project));
-            context.Projects.Add(project);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
         }
 

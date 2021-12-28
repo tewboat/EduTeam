@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Common;
@@ -59,6 +60,18 @@ namespace User_Interface.Controllers
                     .GetEntityByGuid(user.Projects[i].ProjectGuid)));
             return View(projects);
         }
-
+        
+        [HttpPost]
+        public async Task<ActionResult> AddTeamRole(ViewTeamRole viewTeamRole)
+        {
+            var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
+            var user = context.Users
+                .Include(u => u.PreferredRoles)
+                .GetEntityByGuid(guid);
+            var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
+            context.TeamRoles.Add(role);
+            await context.SaveChangesAsync();
+            return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
+        }
     }
 }
