@@ -51,11 +51,14 @@
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Роли, в которых хочу побыть в команде</h5>@*<a href="#" class="btn btn-link text-muted">Show all</a>*@
                     </div>
-                    @if (Model.TeamRoles != null)
-                    {
-                        foreach (var teamRole in Model.TeamRoles)
-                            await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole);
-                    }
+                    <div class="d-flex">
+                        @foreach (var teamRole in Model.TeamRoles)
+                        {
+                            <div style="margin: 10px">
+                                @(await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole))
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
