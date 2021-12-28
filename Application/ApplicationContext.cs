@@ -12,6 +12,7 @@ namespace Application
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<TeamRole> TeamRoles { get; set; }
+        public DbSet<MemberProject> MemberProjects { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -34,7 +35,6 @@ namespace Application
                 .HasKey(up => new { up.UserGuid, up.ProjectGuid });
             modelBuilder.Entity<RoleProject>()
                 .HasKey(rp => rp.ProjectGuid);
-
             modelBuilder.Entity<MemberProject>()
                 .HasOne(up => up.User)
                 .WithMany(u => u.Projects)

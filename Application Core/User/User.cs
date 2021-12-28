@@ -1,4 +1,5 @@
 using ApplicationCore.Common;
+using ApplicationCore.Rights;
 
 namespace ApplicationCore.User
 {
@@ -19,6 +20,7 @@ namespace ApplicationCore.User
         public List<MemberProject> Projects { get; set; }
         public List<InvitationProject> Invitations { get; set; }
         public List<RequestProject> Requests { get; set; }
+        public AccessLevel AccessLevel { get; set; }
 
         public User(string firstName, string secondName, string nickname, string email, string password,
             string description = "")
