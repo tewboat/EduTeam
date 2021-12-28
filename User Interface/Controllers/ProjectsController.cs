@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application;
 using ApplicationCore;
+using ApplicationCore.Common;
 using ApplicationCore.Project;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -93,11 +94,11 @@ namespace User_Interface.Controllers
 
         public ViewResult Project(Guid guid)
         {
-            foreach (var proj in _projects)
+            foreach (var proj in _projects.Where(proj => guid == proj.Guid))
             {
-                if (guid == proj.Guid)
-                    return View(ConvertToView(proj));
+                return View(ConvertToView(proj));
             }
+
             throw new ArgumentException("No project with this Guid");
         }
 
