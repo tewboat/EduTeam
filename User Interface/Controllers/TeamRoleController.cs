@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
+using ApplicationCore.Common;
 using ApplicationCore.Project;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,18 +32,20 @@ public class TeamRoleController : Controller
             return PartialView();
         }
 
+        
         [HttpPost]
         public ActionResult AddTeamRole(ViewTeamRole viewTeamRole)
         {
-            var newTeamRole = new TeamRole(viewTeamRole.Name, viewTeamRole.Description);
             var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
-            var user = context.Users.Include(u => u.PreferredRoles).GetEntityByGuid(guid);
-            if (user == null)
-                throw new NullReferenceException();
-            user.PreferredRoles.Add(new UserRole(user, newTeamRole));
+            var user = context.Users
+                .Include(u => u.PreferredRoles)
+                .GetEntityByGuid(guid);
+            var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
+            context.TeamRoles.Add(role);
             context.SaveChanges();
-            return RedirectToAction("EditUserProfile", "Profile", new {guid});
+            return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
         }
+        
 
         public static ViewTeamRole ConvertToView(TeamRole teamRole)
         {

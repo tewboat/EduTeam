@@ -48,18 +48,6 @@ namespace User_Interface.Controllers
         {
             return View();
         }
-        
-        [HttpPost]
-        public ActionResult AddTeamRole(ViewTeamRole viewTeamRole)
-        {
-            var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
-            var user = context.Users
-                .Include(u => u.PreferredRoles)
-                .GetEntityByGuid(guid);
-            var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
-            context.TeamRoles.Add(role);
-            context.SaveChanges();
-            return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
-        }
+
     }
 }

@@ -1,12 +1,10 @@
 @model ViewTeamRole
 
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
+<div class="card mt-3" style="width: 18rem">
+    <div class="card-body" style="padding: 7px">
+        <h6 class="card-title">@Model.Name</h6>
         <p class="card-text">@Model.Description</p>
-    </div>
-    <div class="card-body">
-        <a href="#" class="card-link">Удалить роль</a>
-        <a href="#" class="card-link">Изменить роль</a>
+        <a href="#" class="card-link" style="font-size: 14px">Изменить</a>
+        <a href="#" class="card-link" style="font-size: 14px">Удалить</a>
     </div>
 </div>

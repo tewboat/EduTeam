@@ -75,7 +75,6 @@ namespace User_Interface.Controllers
                 Email = user.Email,
                 TeamRoles = new List<ViewTeamRole>(
                     user.PreferredRoles
-                        .Select(userRole => userRole.TeamRole)
                         .Select(TeamRoleController.ConvertToView))
             };
         }
