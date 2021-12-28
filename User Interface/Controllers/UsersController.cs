@@ -16,16 +16,14 @@ namespace User_Interface.Controllers
         private readonly ILogger<HomeController> _logger;
         private ApplicationContext context;
 
-        private int productPage;
         private Func<User, bool> filter;
         private Func<User, object> order;
-        public int PageSize = 8;
+        public int PageSize = 12;
 
         public UsersController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
             context = applicationContext;
-            productPage = 1;
             filter = project => true;
             order = project => project.Nickname;
         }
@@ -73,9 +71,9 @@ namespace User_Interface.Controllers
                 Nickname = user.Nickname,
                 Description = user.Description,
                 Email = user.Email,
-                TeamRoles = new List<ViewTeamRole>(
+                TeamRoles = user.PreferredRoles != null ? new List<ViewTeamRole>(
                     user.PreferredRoles
-                        .Select(TeamRoleController.ConvertToView))
+                        .Select(TeamRoleController.ConvertToView)) : null
             };
         }
     }
