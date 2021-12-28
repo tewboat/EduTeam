@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Common;
@@ -42,7 +43,7 @@ namespace User_Interface.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddTeamRole(ViewTeamRole viewTeamRole)
+        public async Task<ActionResult> AddTeamRole(ViewTeamRole viewTeamRole)
         {
             var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
             var user = context.Users
@@ -50,7 +51,7 @@ namespace User_Interface.Controllers
                 .GetEntityByGuid(guid);
             var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
             context.TeamRoles.Add(role);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
         }
     }

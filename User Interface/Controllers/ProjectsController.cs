@@ -94,8 +94,8 @@ namespace User_Interface.Controllers
         private int productPage;
         private Func<Project, bool> filter;
         private Func<Project, object> order;
-        public int PageSize = 2;
-        public int PageCount => context.Projects.Count() / PageSize + context.Projects.Count() % PageSize == 0 ? 0 : 1;
+        private int pageSize = 2;
+        public int PageCount => context.Projects.Count() / pageSize + context.Projects.Count() % pageSize == 0 ? 0 : 1;
 
         public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
@@ -107,21 +107,21 @@ namespace User_Interface.Controllers
         }
         
         
-        public ViewResult Projects(int productPage = 1)
+        public ViewResult Projects(int itemsPerPage = 1)
         {
             return View(new PageProjectListView()
             {
                 Projects = _projects
                     .Where(filter)
                     .OrderByDescending(order)
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize)
+                    .Skip((productPage - 1) * pageSize)
+                    .Take(pageSize)
                     .Select(ConvertToView)
                     .ToList(),
                 PagingInfo = new PagingInfo()
                 {
                     CurrentPage = productPage,
-                    ItemsPerPage = PageSize,
+                    ItemsPerPage = itemsPerPage,
                     TotalItems = _projects.Count
                 },
                 ProjectsFilter = new ProjectsFilter(){ }
@@ -148,9 +148,8 @@ namespace User_Interface.Controllers
         public ActionResult CreateProject(ViewProject p)
         {
             var project = new Project(p.Name, p.Description, Language.Rus);
-            ProjectsController._projects.Add(project);
+            _projects.Add(project);
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
-            //throw new NotImplementedException();
         }
 
         private ViewProject ConvertToView(Project project)

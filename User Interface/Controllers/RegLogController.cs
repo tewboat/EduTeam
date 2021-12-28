@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Application;
 using ApplicationCore.User;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace User_Interface.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(RegistrationModel registration)
+        public async Task<IActionResult> Registration(RegistrationModel registration)
         {
             if (!context.Users.All(u => u.Email != registration.Email)) return View();
             var newUser = new User(
@@ -39,7 +40,7 @@ namespace User_Interface.Controllers
             );
             Response.Cookies.Append("UserGuid", newUser.Guid.ToString());
             context.Users.Add(newUser);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return RedirectToAction("UserProfile", "Users", new {guid = newUser.Guid});
         }
 
