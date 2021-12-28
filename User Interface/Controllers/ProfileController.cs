@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Application;
 using ApplicationCore;
 using ApplicationCore.Common;
@@ -46,7 +48,16 @@ namespace User_Interface.Controllers
 
         public ActionResult UserProjects()
         {
-            return View();
+            var guid = new Guid(Request.Cookies["UserGuid"]);
+            var user = context.Users.Include(u => u.Projects)
+                .GetEntityByGuid(guid);
+            var projects = new List<ViewProject>();
+            for (int i = 0; i < user.Projects.Count; i++)
+                projects.Add(ProjectsController.ConvertToView(
+                    context.Projects
+                    .Include(p => p.RequiredTeamRoles)
+                    .GetEntityByGuid(user.Projects[i].ProjectGuid)));
+            return View(projects);
         }
 
     }

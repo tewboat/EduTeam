@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Application;
 using ApplicationCore;
@@ -45,12 +46,20 @@ public class TeamRoleController : Controller
             context.SaveChanges();
             return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
         }
-        
+
+        public ActionResult DeleteTeamRole(Guid teamRoleGuid)
+        {
+            var userGuid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
+            context.TeamRoles.Remove(context.TeamRoles.Where(tr => tr.Guid == teamRoleGuid).FirstOrDefault());
+            context.SaveChanges();
+            return RedirectToAction("EditUserProfile", "Profile", new {guid = userGuid});
+        }
 
         public static ViewTeamRole ConvertToView(TeamRole teamRole)
         {
             return new ViewTeamRole()
             {
+                Guid = teamRole.Guid,
                 Name = teamRole.Name,
                 Description = teamRole.Description
             };
