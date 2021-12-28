@@ -18,7 +18,7 @@
 <h5>Участники: </h5>
 @foreach (var member in Model.Members)
 {
-    @await Html.PartialAsync("~/Views/Users/UserSummary.cshtml")
+    @await Html.PartialAsync("~/Views/Users/UserSummary.cshtml", member)
 }
 
 </body>

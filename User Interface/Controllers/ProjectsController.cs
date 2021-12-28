@@ -92,13 +92,18 @@ namespace User_Interface.Controllers
                 ProjectsFilter = new ProjectsFilter(){ }
             });
         }
-
+        
         public ViewResult Project(Guid guid)
         {
-            foreach (var proj in _projects.Where(proj => guid == proj.Guid))
-            {
-                return View(ConvertToView(proj));
-            }
+            var project = context.Projects
+                .Include(p => p.Members)
+                .ThenInclude(m => m.User)
+                .Include(p => p.Invitations)
+                .Include(p => p.Requests)
+                .Include(p => p.RequiredTeamRoles)
+                .GetEntityByGuid(guid);
+            if (project != null)
+                return View(ConvertToView(project));
 
             throw new ArgumentException("No project with this Guid");
         }
@@ -112,14 +117,16 @@ namespace User_Interface.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateProject(ViewProject p)
         {
+            if (!Request.Cookies.ContainsKey("UserGuid"))
+                return View();
+            var user = context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
+            if (user == null)
+                return View();
             var project = new Project(p.Name, p.Description, Language.Rus);
-            _projects.Add(project);
-            
-            
             context.Projects.Add(project);
             project.Members.Add(
                 new MemberProject(
-                    context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"])), 
+                    user, 
                     project));
             await context.SaveChangesAsync();
             return RedirectToAction("Project", "Projects", new {guid = project.Guid});
