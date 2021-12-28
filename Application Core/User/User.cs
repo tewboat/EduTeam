@@ -1,3 +1,5 @@
+using ApplicationCore.Common;
+
 namespace ApplicationCore.User
 {
     using System;
@@ -13,7 +15,7 @@ namespace ApplicationCore.User
         public string Password { get; set; }
         public string Nickname { get; set; }
         public string Description { get; set; }
-        public List<UserRole> PreferredRoles { get; set; }
+        public List<TeamRole> PreferredRoles { get; set; }
         public List<MemberProject> Projects { get; set; }
         public List<InvitationProject> Invitations { get; set; }
         public List<RequestProject> Requests { get; set; }
@@ -31,7 +33,7 @@ namespace ApplicationCore.User
             Projects = new List<MemberProject>();
             Invitations = new List<InvitationProject>();
             Requests = new List<RequestProject>();
-            PreferredRoles = new List<UserRole>();
+            PreferredRoles = new List<TeamRole>();
         }
 
         public User()
