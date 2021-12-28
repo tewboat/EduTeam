@@ -32,7 +32,7 @@ namespace User_Interface.Controllers
         }
         
         
-        public ViewResult Projects(int itemsPerPage = 1)
+        public ViewResult Projects(int productPage = 1)
         {
             return View(new PageProjectListView()
             {
@@ -40,8 +40,8 @@ namespace User_Interface.Controllers
                     .Include(p => p.RequiredTeamRoles)
                     .Where(filter)
                     .OrderByDescending(order)
-                    .Skip((productPage - 1) * pageSize)
-                    .Take(pageSize)
+                    .Skip((productPage - 1) * PageSize)
+                    .Take(PageSize)
                     .Select(ConvertToView)
                     .ToList(),
                 PagingInfo = new PagingInfo()
