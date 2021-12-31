@@ -55,7 +55,7 @@ namespace User_Interface.Controllers
 
         public ViewResult Project(Guid guid)
         {
-            if (Request.Cookies.ContainsKey("UserGuid"))
+            if (!Request.Cookies.ContainsKey("UserGuid"))
                 return View(); //todo вывод ошибки
             var user = context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
             if (user == null)

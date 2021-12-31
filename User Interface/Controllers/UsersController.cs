@@ -61,6 +61,18 @@ namespace User_Interface.Controllers
             return View(ConvertToView(user));
         }
 
+        /*[HttpGet]
+        public IActionResult UserInvitation()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult UserInvitation(ViewInvitation invitation)
+        {
+            
+        }*/
+
         public static ViewUser ConvertToView(User user)
         {
             return new ViewUser()
