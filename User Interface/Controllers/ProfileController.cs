@@ -17,18 +17,18 @@ namespace User_Interface.Controllers
     public class ProfileController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private readonly ApplicationContext _context;
 
         public ProfileController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
         }
-        
+
         [HttpGet]
         public ViewResult EditUserProfile(Guid guid)
         {
-            var user = context.Users.Include(u => u.PreferredRoles).GetEntityByGuid(guid);
+            var user = _context.Users.Include(u => u.PreferredRoles).GetEntity(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(UsersController.ConvertToView(user));
@@ -37,41 +37,36 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult EditUserProfile(ViewUser editUser)
         {
-            var guid = new Guid(Request.Cookies["UserGuid"]);
-            var user = context.Users.GetEntityByGuid(guid);
+            var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
+            var user = _context.Users.GetEntity(guid);
             user.FirstName = editUser.FirstName;
             user.SecondName = editUser.SecondName;
             user.Nickname = editUser.Nickname;
             user.Description = editUser.Description;
-            context.SaveChanges();
-            return RedirectToAction("UserProfile", "Users", new {guid});
+            _context.SaveChanges();
+            return RedirectToAction("UserProfile", "Users", new { guid });
         }
 
         public ActionResult UserProjects()
         {
-            var guid = new Guid(Request.Cookies["UserGuid"]);
-            var user = context.Users.Include(u => u.Projects)
-                .GetEntityByGuid(guid);
-            var projects = new List<ViewProject>();
-            for (int i = 0; i < user.Projects.Count; i++)
-                projects.Add(ProjectsController.ConvertToView(
-                    context.Projects
-                    .Include(p => p.RequiredTeamRoles)
-                    .GetEntityByGuid(user.Projects[i].ProjectGuid)));
+            var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
+            var user = _context.Users.GetEntity(guid);
+            var projects =
+                user.Projects.Select(memberProject => ProjectsController.ConvertToView(memberProject.Project))
+                    .ToList();
+
             return View(projects);
         }
-        
+
         [HttpPost]
         public async Task<ActionResult> AddTeamRole(ViewTeamRole viewTeamRole)
         {
             var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
-            var user = context.Users
-                .Include(u => u.PreferredRoles)
-                .GetEntityByGuid(guid);
+            var user = _context.Users.GetEntity(guid);
             var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
-            context.TeamRoles.Add(role);
-            await context.SaveChangesAsync();
-            return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
+            _context.TeamRoles.Add(role);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("EditUserProfile", "Profile", new { guid = guid });
         }
     }
 }

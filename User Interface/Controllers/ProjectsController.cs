@@ -16,16 +16,16 @@ namespace User_Interface.Controllers
     {
         public int PageSize = 6;
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private readonly ApplicationContext _context;
         private Func<Project, bool> filter;
         private Func<Project, object> order;
         
-        public int PageCount => context.Projects.Count() / PageSize + context.Projects.Count() % PageSize == 0 ? 0 : 1;
+        public int PageCount => _context.Projects.Count() / PageSize + _context.Projects.Count() % PageSize == 0 ? 0 : 1;
 
         public ProjectsController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
             filter = project => true;
             order = project => project.DateCreation;
         }
@@ -35,8 +35,7 @@ namespace User_Interface.Controllers
         {
             return View(new PageProjectListView()
             {
-                Projects = context.Projects
-                    .Include(p => p.RequiredTeamRoles)
+                Projects = _context.Projects
                     .Where(filter)
                     .OrderByDescending(order)
                     .Skip((productPage - 1) * PageSize)
@@ -47,7 +46,7 @@ namespace User_Interface.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = context.Projects.Count()
+                    TotalItems = _context.Projects.Count()
                 },
                 ProjectsFilter = new ProjectsFilter() { }
             });
@@ -55,19 +54,16 @@ namespace User_Interface.Controllers
 
         public ViewResult Project(Guid guid)
         {
-            if (Request.Cookies.ContainsKey("UserGuid"))
+            if (!Request.Cookies.ContainsKey("UserGuid"))
                 return View(); //todo вывод ошибки
-            var user = context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
+            var user = _context.Users.GetEntity(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
             if (user == null)
                 return View(); //todo вывод ошибки
-            var project = context.Projects
-                .Include(p => p.Members)
-                .ThenInclude(m => m.User)
-                .Include(p => p.RequiredTeamRoles)
-                .GetEntityByGuid(guid);
+            var project = _context.Projects
+                .GetEntity(guid);
             if (project == null)
                 throw new NullReferenceException("No project with this Guid");
-            var accessLevel = context.MemberProjects.GetMemberAccessLevel(project, user);
+            var accessLevel = _context.MemberProjects.GetMemberAccessLevel(project, user);
             if (!accessLevel.HasValue)
                 return View(); //todo вывод ошибки
             return accessLevel.Value switch
@@ -91,14 +87,14 @@ namespace User_Interface.Controllers
         {
             if (!Request.Cookies.ContainsKey("UserGuid"))
                 return View();
-            var user = context.Users.GetEntityByGuid(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
+            var user = _context.Users.GetEntity(new Guid(Request.Cookies["UserGuid"] ?? string.Empty));
             if (user == null)
                 return View();
             var project = new Project(p.Name, p.Description, Language.Rus);
-            context.Projects.Add(project);
+            _context.Projects.Add(project);
             var memberProject = new MemberProject {User = user, Project = project, UserAccessLevel = AccessLevel.Owner};
             project.Members.Add(memberProject);
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToAction("Project", "Projects", new
             {
                 guid = project.Guid

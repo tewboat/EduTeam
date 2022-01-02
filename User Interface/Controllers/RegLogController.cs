@@ -13,12 +13,12 @@ namespace User_Interface.Controllers
     public class RegLogController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private readonly ApplicationContext _context;
 
         public RegLogController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
         }
 
         [HttpGet]
@@ -30,18 +30,18 @@ namespace User_Interface.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationModel registration)
         {
-            if (!context.Users.All(u => u.Email != registration.Email)) return View();
-            var newUser = new User(
+            if (!_context.Users.All(u => u.Email != registration.Email)) return View();
+            var user = new User(
                 registration.FirstName,
                 registration.SecondName,
                 registration.Nickname,
                 registration.Email,
                 registration.Password
             );
-            Response.Cookies.Append("UserGuid", newUser.Guid.ToString());
-            context.Users.Add(newUser);
-            await context.SaveChangesAsync();
-            return RedirectToAction("UserProfile", "Users", new {guid = newUser.Guid});
+            Response.Cookies.Append("UserGuid", user.Guid.ToString());
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("UserProfile", "Users", new {guid = user.Guid});
         }
 
         [HttpGet]
@@ -53,8 +53,8 @@ namespace User_Interface.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            if (!ModelState.IsValid) return View();
-            var user = context.Users
+            if (!ModelState.IsValid) return View(); // todo вывод ошибки
+            var user = _context.Users
                 .FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
             if (user == null)
                 return View();

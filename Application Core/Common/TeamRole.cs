@@ -8,7 +8,7 @@ namespace ApplicationCore.Common
         public Guid Guid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public User.User User { get; set; }
+        public virtual User.User User { get; set; }
         public Guid UserGuid { get; set; }
         
         public TeamRole(){}

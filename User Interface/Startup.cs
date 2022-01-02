@@ -26,7 +26,9 @@ namespace User_Interface
                 .AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("Default"),
+                options
+                    .UseLazyLoadingProxies()
+                    .UseMySql(Configuration.GetConnectionString("Default"),
                     new MySqlServerVersion(new Version(8,0,27))
                 ));
         }

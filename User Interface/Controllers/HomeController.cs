@@ -20,12 +20,12 @@ namespace User_Interface.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private ApplicationContext _context;
 
         public HomeController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
         }
 
         public IActionResult Index()
@@ -46,7 +46,7 @@ namespace User_Interface.Controllers
 
         public IActionResult LogOut()
         {
-            Response.Cookies.Delete("UserGuid" ?? throw new InvalidOperationException());
+            Response.Cookies.Delete("UserGuid");
             return RedirectToAction("Index", "Home");
         }
     }

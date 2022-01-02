@@ -18,12 +18,12 @@ namespace User_Interface.Controllers
 public class TeamRoleController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private readonly ApplicationContext _context;
 
         public TeamRoleController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
         }
         
         
@@ -35,23 +35,27 @@ public class TeamRoleController : Controller
 
         
         [HttpPost]
-        public ActionResult AddTeamRole(ViewTeamRole viewTeamRole)
+        public async Task<ActionResult> AddTeamRole(ViewTeamRole viewTeamRole)
         {
             var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
-            var user = context.Users
-                .Include(u => u.PreferredRoles)
-                .GetEntityByGuid(guid);
+            var user = _context.Users
+                .GetEntity(guid);
             var role = new TeamRole(viewTeamRole.Name, viewTeamRole.Description, user);
-            context.TeamRoles.Add(role);
-            context.SaveChanges();
+            _context.TeamRoles.Add(role);
+            await _context.SaveChangesAsync();
             return RedirectToAction("EditUserProfile", "Profile", new {guid = guid});
         }
 
-        public ActionResult DeleteTeamRole(Guid teamRoleGuid)
+        public async Task<ActionResult> DeleteTeamRole(Guid teamRoleGuid)
         {
             var userGuid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
-            context.TeamRoles.Remove(context.TeamRoles.Where(tr => tr.Guid == teamRoleGuid).FirstOrDefault());
-            context.SaveChanges();
+            var teamRole = _context.TeamRoles.GetEntity(teamRoleGuid);
+            if (teamRole is not null)
+            {
+                _context.TeamRoles.Remove(teamRole);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("EditUserProfile", "Profile", new {guid = userGuid});
         }
 

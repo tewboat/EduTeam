@@ -9,9 +9,10 @@ using Infrastructure;
 
 namespace Application
 {
+
     public static class DbMethodsExtension
     {
-        public static T GetEntityByGuid<T>(this IQueryable<T> enumerable, Guid guid) where T: IEntity=> 
+        public static T GetEntity<T>(this IQueryable<T> enumerable, Guid guid) where T : IEntity =>
             enumerable.FirstOrDefault(entity => entity.Guid == guid);
 
         public static AccessLevel? GetMemberAccessLevel(this IQueryable<MemberProject> queryable, Project project,
