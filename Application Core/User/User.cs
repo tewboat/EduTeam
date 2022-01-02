@@ -16,10 +16,10 @@ namespace ApplicationCore.User
         public string Password { get; set; }
         public string Nickname { get; set; }
         public string Description { get; set; }
-        public List<TeamRole> PreferredRoles { get; set; }
-        public List<MemberProject> Projects { get; set; }
-        public List<InvitationProject> Invitations { get; set; }
-        public List<RequestProject> Requests { get; set; }
+        public virtual List<TeamRole> PreferredRoles { get; set; }
+        public virtual List<MemberProject> Projects { get; set; }
+        public virtual List<InvitationProject> Invitations { get; set; }
+        public virtual List<RequestProject> Requests { get; set; }
         public AccessLevel AccessLevel { get; set; }
 
         public User(string firstName, string secondName, string nickname, string email, string password,

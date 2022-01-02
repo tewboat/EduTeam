@@ -10,14 +10,14 @@ namespace ApplicationCore.Project
         public Guid Guid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<MemberProject> Members { get; set; }
-        public List<InvitationProject> Invitations { get; set; }
-        public List<RequestProject> Requests { get; set; }
+        public virtual List<MemberProject> Members { get; set; }
+        public virtual List<InvitationProject> Invitations { get; set; }
+        public virtual List<RequestProject> Requests { get; set; }
         public bool IsScrumUsed { get; set; }
         public Language Language { get; set; }
         public bool IsPersonalMeetingsPreferred { get; set; }
         public DateOnly DateCreation { get; set; }
-        public List<RoleProject> RequiredTeamRoles { get; set; }
+        public virtual List<RoleProject> RequiredTeamRoles { get; set; }
 
         public Project()
         {

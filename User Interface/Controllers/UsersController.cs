@@ -14,7 +14,7 @@ namespace User_Interface.Controllers
     public class UsersController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationContext context;
+        private readonly ApplicationContext _context;
 
         private Func<User, bool> filter;
         private Func<User, object> order;
@@ -23,7 +23,7 @@ namespace User_Interface.Controllers
         public UsersController(ILogger<HomeController> logger, ApplicationContext applicationContext)
         {
             _logger = logger;
-            context = applicationContext;
+            _context = applicationContext;
             filter = project => true;
             order = project => project.Nickname;
         }
@@ -32,8 +32,7 @@ namespace User_Interface.Controllers
         {
             return View(new PageUserListView()
                 {
-                    Users = context.Users
-                        .Include(u => u.PreferredRoles)
+                    Users = _context.Users
                         .Where(filter)
                         .OrderByDescending(order)
                         .Skip((productPage - 1) * PageSize)
@@ -44,7 +43,7 @@ namespace User_Interface.Controllers
                     {
                         CurrentPage = productPage,
                         ItemsPerPage = PageSize,
-                        TotalItems = context.Users.Count()
+                        TotalItems = _context.Users.Count()
                     },
                     UsersFilter = new UsersFilter() { }
                 }
@@ -53,9 +52,8 @@ namespace User_Interface.Controllers
 
         public IActionResult UserProfile(Guid guid)
         {
-            var user = context.Users
-                .Include(u => u.PreferredRoles)
-                .GetEntityByGuid(guid);
+            var user = _context.Users
+                .GetEntity(guid);
             if (user == null)
                 throw new NullReferenceException();
             return View(ConvertToView(user));
