@@ -51,10 +51,7 @@ namespace User_Interface.Controllers
         {
             var guid = new Guid(Request.Cookies["UserGuid"] ?? string.Empty);
             var user = _context.Users.GetEntity(guid);
-            var projects =
-                user.Projects.Select(memberProject => ProjectsController.ConvertToView(memberProject.Project))
-                    .ToList();
-
+            var projects = user.Projects.GetViewProjects();
             return View(projects);
         }
 
