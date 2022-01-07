@@ -16,6 +16,7 @@ namespace User_Interface.Models
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
+        public int ProjectsAmount { get; set; }
         public List<ViewTeamRole> TeamRoles { get; set; }
     }
 }
