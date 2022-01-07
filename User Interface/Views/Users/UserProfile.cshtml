@@ -10,34 +10,42 @@
     <link rel="stylesheet" href="~/css/proj_peop.css"/>
 </head>
 <body>
-    <div class="row py-5 px-4">
-        <div class="col-md-8 mx-auto" style="min-width: 600px">
-            <!-- Profile widget -->
-            <div class="bg-white shadow rounded overflow-hidden">
-                <div class="px-4 pt-0 pb-1 cover">
-                    <div class="media align-items-end" style="transform: translateY(4rem)">
-                        @* TODO: сделать подгрузку фото профиля из БД *@
-                        <div class="profile mr-3">
-                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="160" class="rounded mb-2 img-thumbnail">
-                            @if (Context.Request.Cookies["UserGuid"] == Model.Guid.ToString()) // Проверка, того, что это профиль пользователя
-                            {
-                                <a href="@Url.Action("EditUserProfile", "Profile", new {guid = Model.Guid})" class="btn btn-outline-dark btn-sm btn-block">Изменить профиль</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-outline-dark btn-sm btn-block" href="#">Пригласить в команду</a>
-                            }
-                        </div>
-                        <div class="media-body mb-5 text-white">
-                            <h4 class="mt-0 mb-0">@Model.FirstName @Model.SecondName</h4>
-                            <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>&#64;@Model.Nickname</p>
-                        </div>
+<div class="row py-5 px-4">
+    <div class="col-md-8 mx-auto" style="min-width: 600px">
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-1 cover">
+                <div class="media align-items-end" style="transform: translateY(4rem)">
+                    @* TODO: сделать подгрузку фото профиля из БД *@
+                    <div class="profile mr-3">
+                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="160" class="rounded mb-2 img-thumbnail">
+                        @if (Context.Request.Cookies["UserGuid"] == Model.Guid.ToString()) // Проверка, того, что это профиль пользователя
+                        {
+                            <a href="@Url.Action("EditUserProfile", "Profile", new { guid = Model.Guid })" class="btn btn-outline-dark btn-sm btn-block">Изменить профиль</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-dark btn-sm btn-block" type="button" data-toggle="modal" data-target="#exampleModalCenter">Пригласить в команду</a>
+                        }
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0">@Model.FirstName @Model.SecondName</h4>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>&#64;@Model.Nickname</p>
                     </div>
                 </div>
+                <<<<<<< HEAD
                 <div class="bg-light p-4 d-flex justify-content-end text-center">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
                             <h5 class="font-weight-bold mb-0 d-block">@Model.ProjectsAmount</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Проектов</small>
+                        </li>
+                    </ul>
+                    =======
+                </div>
+                <div class="bg-light p-4 d-flex justify-content-end text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">0</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Проектов</small>
                         </li>
                     </ul>
                 </div>
@@ -45,6 +53,7 @@
                     <h5 class="mb-0">Описание</h5>
                     <div class="p-4  shadow-sm bg-light">
                         <p class="font-italic mb-0">@Model.Description</p>
+                        >>>>>>> 71e15fb7f0d09eafa5903bdd6055208dad8cd868
                     </div>
                 </div>
                 <div class="py-4 px-4">
@@ -63,4 +72,5 @@
             </div>
         </div>
     </div>
+</div>
 </body>

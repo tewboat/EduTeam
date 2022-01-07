@@ -18,5 +18,6 @@ namespace User_Interface.Models
         public string Description { get; set; }
         public int ProjectsAmount { get; set; }
         public List<ViewTeamRole> TeamRoles { get; set; }
+        public List<ViewInvitation> Invitations { get; set; }
     }
 }
