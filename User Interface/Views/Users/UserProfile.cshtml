@@ -21,7 +21,7 @@
                         <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="160" class="rounded mb-2 img-thumbnail">
                         @if (Context.Request.Cookies["UserGuid"] == Model.Guid.ToString()) // Проверка, того, что это профиль пользователя
                         {
-                            <a href="@Url.Action("EditUserProfile", "Profile", new {guid = Model.Guid})" class="btn btn-outline-dark btn-sm btn-block">Изменить профиль</a>
+                            <a href="@Url.Action("EditUserProfile", "Profile", new { guid = Model.Guid })" class="btn btn-outline-dark btn-sm btn-block">Изменить профиль</a>
                         }
                         else
                         {
@@ -33,31 +33,41 @@
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>&#64;@Model.Nickname</p>
                     </div>
                 </div>
-            </div>
-            <div class="bg-light p-4 d-flex justify-content-end text-center">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">0</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Проектов</small>
-                    </li>
-                </ul>
-            </div>
-            <div class="px-4 py-3">
-                <h5 class="mb-0">Описание</h5>
-                <div class="p-4  shadow-sm bg-light">
-                    <p class="font-italic mb-0">@Model.Description</p>
+                <<<<<<< HEAD
+                <div class="bg-light p-4 d-flex justify-content-end text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">@Model.ProjectsAmount</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Проектов</small>
+                        </li>
+                    </ul>
+                    =======
                 </div>
-            </div>
-            <div class="py-4 px-4">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="mb-0">Роли, в которых хочу побыть в команде</h5>@*<a href="#" class="btn btn-link text-muted">Show all</a>*@
+                <div class="bg-light p-4 d-flex justify-content-end text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">0</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Проектов</small>
+                        </li>
+                    </ul>
                 </div>
-                <div class="d-flex">
-                    @foreach (var teamRole in Model.TeamRoles)
-                    {
-                        <div style="margin: 10px">
-                            @(await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole))
-                        </div>
-                    }
+                <div class="px-4 py-3">
+                    <h5 class="mb-0">Описание</h5>
+                    <div class="p-4  shadow-sm bg-light">
+                        <p class="font-italic mb-0">@Model.Description</p>
+                        >>>>>>> 71e15fb7f0d09eafa5903bdd6055208dad8cd868
+                    </div>
+                </div>
+                <div class="py-4 px-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">Роли, в которых хочу побыть в команде</h5>@*<a href="#" class="btn btn-link text-muted">Show all</a>*@
+                    </div>
+                    <div class="d-flex">
+                        @foreach (var teamRole in Model.TeamRoles)
+                        {
+                            <div style="margin: 10px">
+                                @(await Html.PartialAsync("~/Views/TeamRole/TeamRoleSummary.cshtml", teamRole))
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

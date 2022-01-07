@@ -81,9 +81,8 @@ namespace User_Interface.Controllers
                 Nickname = user.Nickname,
                 Description = user.Description,
                 Email = user.Email,
-                TeamRoles = user.PreferredRoles != null ? new List<ViewTeamRole>(
-                    user.PreferredRoles
-                        .Select(TeamRoleController.ConvertToView)) : null
+                TeamRoles = user.PreferredRoles?.GetViewTeamRoles(),
+                ProjectsAmount = user.Projects.Count
             };
         }
     }
